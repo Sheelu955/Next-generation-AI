@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Next Gen AI | by Divy</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #ffffff; color: #000; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* ✨ Smooth Animations */
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeScreen {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- 🔐 LOGIN/REGISTER --- */
+        #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; height: 100%; text-align: center; max-width: 400px; margin: 0 auto; width: 100%; animation: fadeScreen 0.4s ease-out; }
+        .login-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;}
+        p.subtitle { color: #666; margin-bottom: 24px; font-size: 0.95rem; }
+        .auth-tabs { display: flex; width: 100%; margin-bottom: 20px; background: #f4f4f4; border-radius: 8px; padding: 4px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 6px; font-weight: 600; transition: 0.2s;}
+        .tab-btn.active { background: #ffffff; color: #000; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .auth-input { width: 100%; background: #ffffff; border: 1px solid #e5e5e5; padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; outline: none; font-size: 1rem; transition: 0.2s;}
+        .auth-input:focus { border-color: #000; }
+        .auth-btn { width: 100%; background: #000; border: none; padding: 14px; border-radius: 8px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;}
+        .auth-btn:hover { background: #333; }
+        .status-msg { margin-top: 12px; font-size: 0.9rem; font-weight: 600; color: #d93025; transition: 0.3s; }
+        
+        /* 🔥 Warning Note Style */
+        .register-warning { display: none; font-size: 0.75rem; color: #666; background: #f9f9f9; border-left: 3px solid #d93025; padding: 8px 12px; margin-bottom: 15px; text-align: left; border-radius: 0 6px 6px 0; line-height: 1.4; }
+
+        /* --- 💬 CHAT HEADER --- */
+        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; animation: fadeScreen 0.5s ease-out;}
+        #header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; background: #fff; z-index: 10;}
+        .header-left { display: flex; align-items: center; gap: 8px; }
+        .chat-header-logo { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.05); } 
+        
+        .model-selector-btn { display: flex; align-items: center; gap: 8px; background: transparent; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.2s; color: #666;}
+        .model-selector-btn:hover { background: #f4f4f4; color: #000;}
+        .model-selector-btn strong { color: #000; }
+        .papa-popup { position: absolute; top: 60px; left: 20px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; z-index: 100; min-width: 260px; overflow: hidden; }
+        .model-option { padding: 12px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #f9f9f9; }
+        .model-option:hover { background: #f9f9f9; }
+        .model-option.selected { border-left: 4px solid #000; background: #f4f4f4; }
+        
+        .header-actions { display: flex; gap: 8px; align-items: center; }
+        .btn-outline { background: transparent; border: 1px solid #e5e5e5; color: #666; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
+        .btn-outline:hover { background: #f4f4f4; color: #000; border-color: #d1d5db;}
+        
+        /* 🔥 Black Sign In Button */
+        .btn-black { background: #000; color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-black:hover { background: #333; }
+
+        /* --- 💬 CHAT BOX --- */
+        #chatBox { flex: 1; padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 12px 18px; line-height: 1.6; border-radius: 18px; flex-shrink: 0; font-size: 1rem; animation: fadeInSlideUp 0.4s ease-out forwards; opacity: 0;}
+        .msg-user { background: #f4f4f4; align-self: flex-end; border-bottom-right-radius: 4px; color: #000;}
+        .msg-ai { background: transparent; align-self: flex-start; width: 100%; overflow: visible; padding-left: 0; }
+        
+        .msg-ai p { margin-bottom: 12px; } .msg-ai p:last-child { margin-bottom: 0; }
+        .msg-ai ul, .msg-ai ol { margin-left: 24px; margin-bottom: 12px; }
+        .msg-ai table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; display: block; overflow-x: auto; white-space: nowrap;}
+        .msg-ai th, .msg-ai td { border: 1px solid #e5e5e5; padding: 10px 14px; text-align: left; }
+        .msg-ai th { background-color: #f9f9f9; font-weight: 600; color: #000; }
+        .msg-ai pre { position: relative; background: #f6f8fa; padding: 36px 16px 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; border: 1px solid #e1e4e8; }
+        .msg-ai code { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;}
+        
+        .copy-code-btn { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #ddd; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: 0.2s; color: #333;}
+        .copy-code-btn:hover { background: #f0f0f0; }
+        .speak-btn { background: transparent; border: none; color: #888; cursor: pointer; margin-top: 8px; display: flex; align-items: center; gap: 5px; font-size: 0.8rem; font-weight: 500;}
+        .speak-btn:hover { color: #000; }
+
+        /* ⏳ Bouncing Dots Loader */
+        .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 8px 0; }
+        .typing-indicator span { width: 8px; height: 8px; background-color: #000; border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite ease-in-out both; }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* --- ✍️ FOOTER --- */
+        #input-area { padding: 10px 20px 30px; background: #fff; width: 100%; border-top: 1px solid #f0f0f0;}
+        .input-wrapper { display: flex; gap: 12px; border: 1px solid #d1d5db; padding: 10px 10px 10px 16px; border-radius: 24px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.3s;}
+        .input-wrapper:focus-within { border-color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        #chatInput { flex: 1; border: none; outline: none; font-size: 1rem; color: #000; }
+        #sendBtn { background: #000; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        #sendBtn:hover { background: #333; transform: scale(1.05); }
+        #sendBtn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    </style>
+</head>
+<body>
+
+<div id="login-section">
+    <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="login-logo" alt="Next Gen AI Logo">
+    <h1>Next Gen AI</h1>
+    <p class="subtitle">Developed in India by Divy</p>
+    
+    <div class="auth-tabs">
+        <button class="tab-btn active" id="tab-login" onclick="switchAuth('login')">Log in</button>
+        <button class="tab-btn" id="tab-register" onclick="switchAuth('register')">Sign up</button>
+    </div>
+    
+    <div id="email-box" style="width: 100%;">
+        <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;">
+        <input type="email" id="emailInput" class="auth-input" placeholder="Email address">
+        
+        <div id="registerWarning" class="register-warning">
+            <strong>Formal Notice:</strong> Creating multiple or duplicate accounts is strictly prohibited and is considered an unauthorized practice.
+        </div>
+
+        <button class="auth-btn" onclick="sendOTP()" id="otpBtn">Continue</button>
+        <button class="btn-outline" style="width: 100%; margin-top: 10px; justify-content: center; padding: 14px; border-radius: 8px;" onclick="showChatScreen()">Back to Chat</button>
+    </div>
+    
+    <div id="otp-box" style="display: none; width: 100%;">
+        <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP" maxlength="6">
+        <button class="auth-btn" onclick="verifyOTP()" id="verifyBtn">Verify & Enter</button>
+        <button class="btn-outline" style="width: 100%; margin-top: 10px; justify-content: center; padding: 14px; border-radius: 8px;" onclick="document.getElementById('otp-box').style.display='none'; document.getElementById('email-box').style.display='block';">Back</button>
+    </div>
+    <div id="login-status" class="status-msg"></div>
+</div>
+
+<div id="chat-section">
+    <header id="header">
+        <div class="header-left">
+            <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="chat-header-logo" alt="Logo">
+            
+            <button class="model-selector-btn" onclick="togglePapa()">
+                <strong id="active-model-name">Next Gen 2.0</strong> 
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+            </button>
+            <div id="papa-popup" class="papa-popup">
+                <div class="model-option selected" id="opt-2.0" onclick="selectModel('2.0', 'Next Gen 2.0')">
+                    <strong style="font-size: 1rem;">Next Gen 2.0</strong>
+                    <span>बेसिक चैट और फास्ट जवाब के लिए</span>
+                </div>
+                <div class="model-option" id="opt-3.1" onclick="selectModel('3.1', 'Next Gen 3.1')">
+                    <strong style="font-size: 1rem;">Next Gen 3.1</strong>
+                    <span>मैथ, कोडिंग और रिज़निंग के लिए</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <button class="btn-outline" id="new-chat-btn" onclick="startNewChat()" style="display: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> New Chat
+            </button>
+            
+            <button class="btn-black" id="header-signin-btn" onclick="showLoginScreen()">Sign in</button>
+            <button class="btn-outline" id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
+        </div>
+    </header>
+
+    <main id="chatBox"></main>
+    
+    <footer id="input-area">
+        <div class="input-wrapper">
+            <input type="text" id="chatInput" placeholder="Message Next Gen AI..." autocomplete="off" onkeypress="if(event.key === 'Enter') sendChat()">
+            <button id="sendBtn" onclick="sendChat()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // 🚀 NEW DEPLOYMENT URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbziCqN3U_FCzNXQRIJzWaGBf-RWglEAexsGOnKtRrnYHY8PxAIND82pkMOiuAD-8Ylb/exec";
+    
+    marked.setOptions({ breaks: true, gfm: true });
+
+    let currentUserEmail = localStorage.getItem("nextgen_user_email") || null;
+    let currentUserName = localStorage.getItem("nextgen_user_name") || "Guest";
+    let selectedModelType = "2.0"; 
+    let chatMemoryContext = [];
+    let isRegisterMode = false;
+    
+    // 🔥 Guest Tracking Variables
+    let guestMessageCount = 0;
+    const MAX_GUEST_MESSAGES = 3;
+
+    // 🎙️ PREMIUM VOICE ENGINE (100% Updated)
+    let engVoice = null, hinVoice = null;
+    function loadVoices() {
+        let voices = window.speechSynthesis.getVoices();
+        
+        // Premium English Voices
+        engVoice = voices.find(v => v.name.includes("Google UK English Female")) || 
+                   voices.find(v => v.name.includes("Google US English")) || 
+                   voices.find(v => v.name.includes("Microsoft Aria")) || 
+                   voices.find(v => v.name.includes("Google UK English")) || 
+                   voices.find(v => v.lang.startsWith("en-"));
+                   
+        // Premium Hindi Voices
+        hinVoice = voices.find(v => v.name.includes("Google हिन्दी")) || 
+                   voices.find(v => v.name.includes("Microsoft Swara")) || 
+                   voices.find(v => v.lang.startsWith("hi-"));
+    }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+
+    // 🚀 Initialize App (Always show chat directly)
+    window.onload = () => { 
+        showChatScreen();
+        if(currentUserEmail) {
+            document.getElementById('header-signin-btn').style.display = 'none';
+            document.getElementById('logout-btn').style.display = 'flex';
+            document.getElementById('new-chat-btn').style.display = 'flex';
+            fetchHistory();
+        } else {
+            document.getElementById('header-signin-btn').style.display = 'block';
+            document.getElementById('logout-btn').style.display = 'none';
+            document.getElementById('new-chat-btn').style.display = 'none';
+            renderHTML('ai', "Hello **Guest**! Welcome to Next Gen AI. You can ask me up to 3 questions before signing in. How can I assist you today?");
+        }
+    };
+
+    function showLoginScreen() {
+        document.getElementById('chat-section').style.display = 'none';
+        document.getElementById('login-section').style.display = 'flex';
+        switchAuth('login');
+    }
+
+    function showChatScreen() {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('chat-section').style.display = 'flex';
+    }
+
+    function switchAuth(mode) {
+        isRegisterMode = (mode === 'register');
+        document.getElementById('tab-login').classList.toggle('active', !isRegisterMode);
+        document.getElementById('tab-register').classList.toggle('active', isRegisterMode);
+        document.getElementById('nameInput').style.display = isRegisterMode ? 'block' : 'none';
+        document.getElementById('registerWarning').style.display = isRegisterMode ? 'block' : 'none'; 
+        document.getElementById('login-status').innerText = "";
+    }
+
+    function togglePapa() {
+        const popup = document.getElementById('papa-popup');
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectModel(type, name) {
+        selectedModelType = type;
+        document.getElementById('active-model-name').innerText = name;
+        document.querySelectorAll('.model-option').forEach(opt => opt.classList.remove('selected'));
+        document.getElementById(`opt-${type}`).classList.add('selected');
+        togglePapa();
+    }
+
+    document.addEventListener('click', function(event) {
+        const popup = document.getElementById('papa-popup');
+        const btn = document.querySelector('.model-selector-btn');
+        if (popup && popup.style.display === 'block' && !popup.contains(event.target) && !btn.contains(event.target)) {
+            popup.style.display = 'none';
+        }
+    });
+
+    async function sendOTP() {
+        const email = document.getElementById('emailInput').value.trim();
+        const name = document.getElementById('nameInput').value.trim();
+        const statusObj = document.getElementById('login-status');
+        
+        if(!email) return statusObj.innerText = "Please enter an email address.";
+        if(isRegisterMode && !name) return statusObj.innerText = "Please enter your name.";
+        
+        statusObj.innerText = "";
+        statusObj.style.color = "#d93025"; 
+        document.getElementById('otpBtn').innerText = "Scanning & Sending...";
+        document.getElementById('otpBtn').disabled = true;
+
+        try {
+            const actionType = isRegisterMode ? "register" : "sendOTP";
+            const payload = { action: actionType, email: email };
+            if (isRegisterMode) payload.name = name;
+
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+            const data = await res.json();
+            
+            if(data.status === "success") {
+                document.getElementById('email-box').style.display = 'none';
+                document.getElementById('otp-box').style.display = 'block';
+            } else if (data.isDuplicate) {
+                statusObj.style.color = "#10a37f"; 
+                statusObj.innerText = "Account already exists! Redirecting to Log in...";
+                setTimeout(() => { switchAuth('login'); statusObj.innerText = ""; }, 1500);
+            } else { throw new Error(data.error); }
+        } catch(e) { statusObj.innerText = e.message || "Error sending OTP. Try again."; }
+        document.getElementById('otpBtn').innerText = "Continue";
+        document.getElementById('otpBtn').disabled = false;
+    }
+
+    async function verifyOTP() {
+        const email = document.getElementById('emailInput').value.trim();
+        const otp = document.getElementById('otpInput').value.trim();
+        const name = document.getElementById('nameInput').value.trim();
+        const statusObj = document.getElementById('login-status');
+        if(!otp) return statusObj.innerText = "Please enter the OTP.";
+        
+        document.getElementById('verifyBtn').innerText = "Verifying...";
+        document.getElementById('verifyBtn').disabled = true;
+
+        try {
+            const actionType = isRegisterMode ? "verifyRegister" : "verifyOTP";
+            const payload = { action: actionType, email: email, otp: otp };
+            if (isRegisterMode) payload.name = name;
+
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+            const data = await res.json();
+            
+            if(data.status === "success") {
+                localStorage.setItem("nextgen_user_email", email);
+                if(isRegisterMode) localStorage.setItem("nextgen_user_name", name);
+                location.reload();
+            } else { statusObj.innerText = "Invalid OTP. Please try again."; }
+        } catch(e) { statusObj.innerText = "Verification failed."; }
+        document.getElementById('verifyBtn').innerText = "Verify & Enter";
+        document.getElementById('verifyBtn').disabled = false;
+    }
+
+    function logout() { localStorage.clear(); location.reload(); }
+
+    async function startNewChat() {
+        document.getElementById("chatBox").innerHTML = "<div style='text-align:center; color:#666; font-size:0.9rem; padding: 20px;'>Clearing space...</div>";
+        chatMemoryContext = []; 
+        try {
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "newChat", email: currentUserEmail }) });
+            document.getElementById("chatBox").innerHTML = "";
+            renderHTML('ai', `Hello **${currentUserName}**! A fresh session has started. What would you like to explore?`);
+        } catch(e) { fetchHistory(); }
+    }
+
+    async function fetchHistory() {
+        try {
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getHistory", email: currentUserEmail }) });
+            const data = await res.json();
+            document.getElementById("chatBox").innerHTML = "";
+            if(data.history && data.history.length > 0) {
+                chatMemoryContext = data.history;
+                data.history.forEach(m => renderHTML(m.role === 'user' ? 'user' : 'ai', m.content));
+            } else {
+                renderHTML('ai', `Welcome back, **${currentUserName}**! Your private secure space is ready. How can I assist you today?`);
+            }
+        } catch(e) { document.getElementById("chatBox").innerHTML = ""; }
+    }
+
+    async function sendChat() {
+        const input = document.getElementById("chatInput");
+        const sendBtn = document.getElementById("sendBtn");
+        const val = input.value.trim();
+        if(!val) return;
+
+        // 🔥 Guest Limit Logic
+        if (!currentUserEmail) {
+            if (guestMessageCount >= MAX_GUEST_MESSAGES) {
+                renderHTML('ai', "🔒 **Free Limit Reached!**<br>You have used your 3 free guest questions. Please **Sign in / Sign up** to continue your conversation without any limits.");
+                setTimeout(() => showLoginScreen(), 3000);
+                return;
+            }
+            guestMessageCount++;
+        }
+
+        renderHTML('user', val);
+        input.value = ""; input.disabled = true; sendBtn.disabled = true;
+
+        // ✨ Animated Bouncing Dots Loader
+        const loaderId = "loader-" + Date.now();
+        const loaderHTML = `<div id="${loaderId}" class="msg msg-ai"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+        document.getElementById("chatBox").insertAdjacentHTML('beforeend', loaderHTML);
+        document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+
+        try {
+            const payload = { 
+                action: "chat", 
+                email: currentUserEmail || "Guest",
+                message: val, 
+                history: chatMemoryContext,
+                modelType: selectedModelType 
+            };
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+            const data = await res.json();
+            
+            document.getElementById(loaderId).remove();
+            renderHTML('ai', data.reply);
+            chatMemoryContext.push({role: "user", content: val}, {role: "assistant", content: data.reply});
+        } catch (e) { 
+            document.getElementById(loaderId).remove();
+            renderHTML('ai', "⚠️ Connection error. Please try again."); 
+        }
+        
+        input.disabled = false; sendBtn.disabled = false; input.focus();
+    }
+
+    function renderHTML(role, text) {
+        const box = document.getElementById("chatBox");
+        const div = document.createElement("div");
+        div.className = `msg ${role === 'user' ? 'msg-user' : 'msg-ai'}`;
+        div.innerHTML = marked.parse(text);
+
+        if(role === 'ai') {
+            const btn = document.createElement("button");
+            btn.className = "speak-btn";
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
+            btn.onclick = () => {
+                window.speechSynthesis.cancel();
+                let cleanText = div.cloneNode(true);
+                cleanText.querySelectorAll('pre').forEach(p => p.remove());
+                let finalAudioText = cleanText.innerText.replace("Read Aloud", "");
+                const utt = new SpeechSynthesisUtterance(finalAudioText);
+                utt.voice = /[\u0900-\u097F]/.test(finalAudioText) ? hinVoice : engVoice;
+                window.speechSynthesis.speak(utt);
+            };
+            div.appendChild(btn);
+
+            div.querySelectorAll('pre').forEach(p => {
+                const codeBlock = p.querySelector('code');
+                const cp = document.createElement('button'); 
+                cp.className = 'copy-code-btn'; cp.innerText = 'Copy';
+                cp.onclick = async () => { 
+                    try { await navigator.clipboard.writeText(codeBlock.innerText); cp.innerText = 'Copied!'; setTimeout(() => cp.innerText = 'Copy', 2000); } 
+                    catch (err) { cp.innerText = 'Error'; }
+                };
+                p.appendChild(cp);
+                if(codeBlock) hljs.highlightElement(codeBlock);
+            });
+            
+            renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}] });
+        }
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
+</body>
+</html>
