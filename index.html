@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Next Gen AI | by Divy</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,17 +15,23 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: #ffffff; color: #000; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        body { 
+            background-color: #ffffff; 
+            color: #000; 
+            height: 100vh; 
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
 
-        /* ✨ Smooth Animations */
-        @keyframes fadeInSlideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeScreen {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeScreen { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes blinkCursor { 50% { opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .typing-cursor { display: inline-block; width: 6px; height: 16px; background-color: #000; margin-left: 4px; animation: blinkCursor 0.7s infinite; vertical-align: middle; }
 
         /* --- 🔐 LOGIN/REGISTER --- */
         #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; height: 100%; text-align: center; max-width: 400px; margin: 0 auto; width: 100%; animation: fadeScreen 0.4s ease-out; }
@@ -40,12 +46,10 @@
         .auth-btn { width: 100%; background: #000; border: none; padding: 14px; border-radius: 8px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;}
         .auth-btn:hover { background: #333; }
         .status-msg { margin-top: 12px; font-size: 0.9rem; font-weight: 600; color: #d93025; transition: 0.3s; }
-        
-        /* 🔥 Warning Note Style */
         .register-warning { display: none; font-size: 0.75rem; color: #666; background: #f9f9f9; border-left: 3px solid #d93025; padding: 8px 12px; margin-bottom: 15px; text-align: left; border-radius: 0 6px 6px 0; line-height: 1.4; }
 
         /* --- 💬 CHAT HEADER --- */
-        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; animation: fadeScreen 0.5s ease-out;}
+        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 900px; margin: 0 auto; position: relative; animation: fadeScreen 0.5s ease-out;}
         #header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; background: #fff; z-index: 10;}
         .header-left { display: flex; align-items: center; gap: 8px; }
         .chat-header-logo { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.05); } 
@@ -61,14 +65,12 @@
         .header-actions { display: flex; gap: 8px; align-items: center; }
         .btn-outline { background: transparent; border: 1px solid #e5e5e5; color: #666; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
         .btn-outline:hover { background: #f4f4f4; color: #000; border-color: #d1d5db;}
-        
-        /* 🔥 Black Sign In Button */
         .btn-black { background: #000; color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn-black:hover { background: #333; }
 
         /* --- 💬 CHAT BOX --- */
         #chatBox { flex: 1; padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
-        .msg { max-width: 85%; padding: 12px 18px; line-height: 1.6; border-radius: 18px; flex-shrink: 0; font-size: 1rem; animation: fadeInSlideUp 0.4s ease-out forwards; opacity: 0;}
+        .msg { max-width: 85%; padding: 12px 18px; line-height: 1.6; border-radius: 18px; flex-shrink: 0; font-size: 1rem; animation: fadeInSlideUp 0.3s ease-out forwards; }
         .msg-user { background: #f4f4f4; align-self: flex-end; border-bottom-right-radius: 4px; color: #000;}
         .msg-ai { background: transparent; align-self: flex-start; width: 100%; overflow: visible; padding-left: 0; }
         
@@ -85,21 +87,36 @@
         .speak-btn { background: transparent; border: none; color: #888; cursor: pointer; margin-top: 8px; display: flex; align-items: center; gap: 5px; font-size: 0.8rem; font-weight: 500;}
         .speak-btn:hover { color: #000; }
 
-        /* ⏳ Bouncing Dots Loader */
-        .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 8px 0; }
-        .typing-indicator span { width: 8px; height: 8px; background-color: #000; border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite ease-in-out both; }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        /* 🧠 SMART DYNAMIC LOADER CSS */
+        .status-cycle { display: flex; align-items: center; gap: 10px; color: #666; font-style: italic; font-size: 0.95rem; padding: 8px 12px; background: #f9f9f9; border-radius: 12px; border: 1px solid #e5e5e5; }
+        .spinner-small { width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .status-text-anim { animation: fadeInSlideUp 0.3s ease-out forwards; }
 
         /* --- ✍️ FOOTER --- */
-        #input-area { padding: 10px 20px 30px; background: #fff; width: 100%; border-top: 1px solid #f0f0f0;}
+        #input-area { padding: 10px 20px 20px; background: #fff; width: 100%; border-top: 1px solid #f0f0f0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
         .input-wrapper { display: flex; gap: 12px; border: 1px solid #d1d5db; padding: 10px 10px 10px 16px; border-radius: 24px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.3s;}
         .input-wrapper:focus-within { border-color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         #chatInput { flex: 1; border: none; outline: none; font-size: 1rem; color: #000; }
-        #sendBtn { background: #000; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        #sendBtn { background: #000; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0;}
         #sendBtn:hover { background: #333; transform: scale(1.05); }
         #sendBtn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+        /* 📱 RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            #header { padding: 10px 12px; }
+            .header-left { gap: 4px; }
+            .chat-header-logo { width: 28px; height: 28px; border-radius: 6px; }
+            .model-selector-btn { font-size: 0.85rem; padding: 6px 8px; gap: 4px;}
+            .btn-outline, .btn-black { padding: 6px 10px; font-size: 0.75rem; }
+            .header-actions { gap: 4px; }
+            #chatBox { padding: 15px 12px; gap: 18px;}
+            .msg { max-width: 95%; padding: 10px 14px; font-size: 0.95rem; }
+            #input-area { padding: 8px 12px 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+            .input-wrapper { padding: 8px 8px 8px 14px; }
+            #chatInput { font-size: 0.95rem; }
+            .papa-popup { left: 10px; min-width: 220px; top: 55px; }
+            .hide-mobile { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -115,8 +132,8 @@
     </div>
     
     <div id="email-box" style="width: 100%;">
-        <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;">
-        <input type="email" id="emailInput" class="auth-input" placeholder="Email address">
+        <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;" onkeypress="if(event.key === 'Enter') sendOTP()">
+        <input type="email" id="emailInput" class="auth-input" placeholder="Email address" onkeypress="if(event.key === 'Enter') sendOTP()">
         
         <div id="registerWarning" class="register-warning">
             <strong>Formal Notice:</strong> Creating multiple or duplicate accounts is strictly prohibited and is considered an unauthorized practice.
@@ -127,7 +144,7 @@
     </div>
     
     <div id="otp-box" style="display: none; width: 100%;">
-        <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP" maxlength="6">
+        <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP" maxlength="6" onkeypress="if(event.key === 'Enter') verifyOTP()">
         <button class="auth-btn" onclick="verifyOTP()" id="verifyBtn">Verify & Enter</button>
         <button class="btn-outline" style="width: 100%; margin-top: 10px; justify-content: center; padding: 14px; border-radius: 8px;" onclick="document.getElementById('otp-box').style.display='none'; document.getElementById('email-box').style.display='block';">Back</button>
     </div>
@@ -157,7 +174,7 @@
         
         <div class="header-actions">
             <button class="btn-outline" id="new-chat-btn" onclick="startNewChat()" style="display: none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> New Chat
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> <span class="hide-mobile">New Chat</span>
             </button>
             
             <button class="btn-black" id="header-signin-btn" onclick="showLoginScreen()">Sign in</button>
@@ -178,8 +195,9 @@
 </div>
 
 <script>
-    // 🚀 NEW DEPLOYMENT URL
-    const API_URL = "https://script.google.com/macros/s/AKfycbziCqN3U_FCzNXQRIJzWaGBf-RWglEAexsGOnKtRrnYHY8PxAIND82pkMOiuAD-8Ylb/exec";
+    // 🔗 API URLs 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwHznkQVxAx6yk8TgI5R8RQDUgcEuBpxYamU-O1EvO5HMIrLXnC7xqWnRxGkSDRctVz/exec";
+    const WORKER_URL = "https://rapid-cake-a47a.katiyarsheelu07.workers.dev/";
     
     marked.setOptions({ breaks: true, gfm: true });
 
@@ -189,31 +207,20 @@
     let chatMemoryContext = [];
     let isRegisterMode = false;
     
-    // 🔥 Guest Tracking Variables
     let guestMessageCount = 0;
     const MAX_GUEST_MESSAGES = 3;
 
-    // 🎙️ PREMIUM VOICE ENGINE (100% Updated)
+    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
     let engVoice = null, hinVoice = null;
     function loadVoices() {
         let voices = window.speechSynthesis.getVoices();
-        
-        // Premium English Voices
-        engVoice = voices.find(v => v.name.includes("Google UK English Female")) || 
-                   voices.find(v => v.name.includes("Google US English")) || 
-                   voices.find(v => v.name.includes("Microsoft Aria")) || 
-                   voices.find(v => v.name.includes("Google UK English")) || 
-                   voices.find(v => v.lang.startsWith("en-"));
-                   
-        // Premium Hindi Voices
-        hinVoice = voices.find(v => v.name.includes("Google हिन्दी")) || 
-                   voices.find(v => v.name.includes("Microsoft Swara")) || 
-                   voices.find(v => v.lang.startsWith("hi-"));
+        engVoice = voices.find(v => v.name.includes("Google UK English Female")) || voices.find(v => v.name.includes("Google US English")) || voices.find(v => v.name.includes("Microsoft Aria")) || voices.find(v => v.lang.startsWith("en-"));
+        hinVoice = voices.find(v => v.name.includes("Google हिन्दी")) || voices.find(v => v.name.includes("Microsoft Swara")) || voices.find(v => v.lang.startsWith("hi-"));
     }
     window.speechSynthesis.onvoiceschanged = loadVoices;
     loadVoices();
 
-    // 🚀 Initialize App (Always show chat directly)
     window.onload = () => { 
         showChatScreen();
         if(currentUserEmail) {
@@ -225,21 +232,12 @@
             document.getElementById('header-signin-btn').style.display = 'block';
             document.getElementById('logout-btn').style.display = 'none';
             document.getElementById('new-chat-btn').style.display = 'none';
-            renderHTML('ai', "Hello **Guest**! Welcome to Next Gen AI. You can ask me up to 3 questions before signing in. How can I assist you today?");
+            renderHTML('ai', "Hello **Guest**! Welcome to Next Gen AI. You can ask me up to 3 questions before signing in. How can I assist you today?", false);
         }
     };
 
-    function showLoginScreen() {
-        document.getElementById('chat-section').style.display = 'none';
-        document.getElementById('login-section').style.display = 'flex';
-        switchAuth('login');
-    }
-
-    function showChatScreen() {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('chat-section').style.display = 'flex';
-    }
-
+    function showLoginScreen() { document.getElementById('chat-section').style.display = 'none'; document.getElementById('login-section').style.display = 'flex'; switchAuth('login'); }
+    function showChatScreen() { document.getElementById('login-section').style.display = 'none'; document.getElementById('chat-section').style.display = 'flex'; }
     function switchAuth(mode) {
         isRegisterMode = (mode === 'register');
         document.getElementById('tab-login').classList.toggle('active', !isRegisterMode);
@@ -248,12 +246,7 @@
         document.getElementById('registerWarning').style.display = isRegisterMode ? 'block' : 'none'; 
         document.getElementById('login-status').innerText = "";
     }
-
-    function togglePapa() {
-        const popup = document.getElementById('papa-popup');
-        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    }
-
+    function togglePapa() { const popup = document.getElementById('papa-popup'); popup.style.display = popup.style.display === 'block' ? 'none' : 'block'; }
     function selectModel(type, name) {
         selectedModelType = type;
         document.getElementById('active-model-name').innerText = name;
@@ -261,13 +254,9 @@
         document.getElementById(`opt-${type}`).classList.add('selected');
         togglePapa();
     }
-
     document.addEventListener('click', function(event) {
-        const popup = document.getElementById('papa-popup');
-        const btn = document.querySelector('.model-selector-btn');
-        if (popup && popup.style.display === 'block' && !popup.contains(event.target) && !btn.contains(event.target)) {
-            popup.style.display = 'none';
-        }
+        const popup = document.getElementById('papa-popup'); const btn = document.querySelector('.model-selector-btn');
+        if (popup && popup.style.display === 'block' && !popup.contains(event.target) && !btn.contains(event.target)) popup.style.display = 'none';
     });
 
     async function sendOTP() {
@@ -276,32 +265,27 @@
         const statusObj = document.getElementById('login-status');
         
         if(!email) return statusObj.innerText = "Please enter an email address.";
-        if(isRegisterMode && !name) return statusObj.innerText = "Please enter your name.";
+        if(!isValidEmail(email)) return statusObj.innerText = "Please enter a valid email format.";
+        if(isRegisterMode && !name) return statusObj.innerText = "Please enter your full name.";
         
-        statusObj.innerText = "";
-        statusObj.style.color = "#d93025"; 
-        document.getElementById('otpBtn').innerText = "Scanning & Sending...";
-        document.getElementById('otpBtn').disabled = true;
+        statusObj.innerText = ""; statusObj.style.color = "#d93025"; 
+        document.getElementById('otpBtn').innerText = "Scanning & Sending..."; document.getElementById('otpBtn').disabled = true;
 
         try {
-            const actionType = isRegisterMode ? "register" : "sendOTP";
-            const payload = { action: actionType, email: email };
+            const payload = { action: isRegisterMode ? "register" : "sendOTP", email: email };
             if (isRegisterMode) payload.name = name;
-
-            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
             const data = await res.json();
             
             if(data.status === "success") {
-                document.getElementById('email-box').style.display = 'none';
-                document.getElementById('otp-box').style.display = 'block';
+                document.getElementById('email-box').style.display = 'none'; document.getElementById('otp-box').style.display = 'block';
+                document.getElementById('otpInput').focus();
             } else if (data.isDuplicate) {
-                statusObj.style.color = "#10a37f"; 
-                statusObj.innerText = "Account already exists! Redirecting to Log in...";
+                statusObj.style.color = "#10a37f"; statusObj.innerText = "Account already exists! Redirecting to Log in...";
                 setTimeout(() => { switchAuth('login'); statusObj.innerText = ""; }, 1500);
-            } else { throw new Error(data.error); }
+            } else throw new Error(data.error);
         } catch(e) { statusObj.innerText = e.message || "Error sending OTP. Try again."; }
-        document.getElementById('otpBtn').innerText = "Continue";
-        document.getElementById('otpBtn').disabled = false;
+        document.getElementById('otpBtn').innerText = "Continue"; document.getElementById('otpBtn').disabled = false;
     }
 
     async function verifyOTP() {
@@ -309,139 +293,264 @@
         const otp = document.getElementById('otpInput').value.trim();
         const name = document.getElementById('nameInput').value.trim();
         const statusObj = document.getElementById('login-status');
-        if(!otp) return statusObj.innerText = "Please enter the OTP.";
         
-        document.getElementById('verifyBtn').innerText = "Verifying...";
-        document.getElementById('verifyBtn').disabled = true;
+        if(!otp || otp.length < 6) return statusObj.innerText = "Please enter a valid 6-digit OTP.";
+        document.getElementById('verifyBtn').innerText = "Verifying..."; document.getElementById('verifyBtn').disabled = true;
 
         try {
-            const actionType = isRegisterMode ? "verifyRegister" : "verifyOTP";
-            const payload = { action: actionType, email: email, otp: otp };
+            const payload = { action: isRegisterMode ? "verifyRegister" : "verifyOTP", email: email, otp: otp };
             if (isRegisterMode) payload.name = name;
-
-            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
             const data = await res.json();
             
             if(data.status === "success") {
                 localStorage.setItem("nextgen_user_email", email);
                 if(isRegisterMode) localStorage.setItem("nextgen_user_name", name);
                 location.reload();
-            } else { statusObj.innerText = "Invalid OTP. Please try again."; }
+            } else statusObj.innerText = "Invalid OTP. Please try again.";
         } catch(e) { statusObj.innerText = "Verification failed."; }
-        document.getElementById('verifyBtn').innerText = "Verify & Enter";
-        document.getElementById('verifyBtn').disabled = false;
+        document.getElementById('verifyBtn').innerText = "Verify & Enter"; document.getElementById('verifyBtn').disabled = false;
     }
 
     function logout() { localStorage.clear(); location.reload(); }
 
     async function startNewChat() {
-        document.getElementById("chatBox").innerHTML = "<div style='text-align:center; color:#666; font-size:0.9rem; padding: 20px;'>Clearing space...</div>";
+        document.getElementById("chatBox").innerHTML = "<div style='text-align:center; color:#666; font-size:0.9rem; padding: 20px;'>Clearing secure space...</div>";
         chatMemoryContext = []; 
         try {
-            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "newChat", email: currentUserEmail }) });
+            await fetch(GAS_URL, { method: "POST", body: JSON.stringify({ action: "newChat", email: currentUserEmail }) });
             document.getElementById("chatBox").innerHTML = "";
-            renderHTML('ai', `Hello **${currentUserName}**! A fresh session has started. What would you like to explore?`);
+            renderHTML('ai', `Hello **${currentUserName}**! A fresh session has started. What would you like to explore?`, false);
         } catch(e) { fetchHistory(); }
     }
 
     async function fetchHistory() {
         try {
-            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getHistory", email: currentUserEmail }) });
+            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify({ action: "getHistory", email: currentUserEmail }) });
             const data = await res.json();
             document.getElementById("chatBox").innerHTML = "";
             if(data.history && data.history.length > 0) {
                 chatMemoryContext = data.history;
-                data.history.forEach(m => renderHTML(m.role === 'user' ? 'user' : 'ai', m.content));
+                data.history.forEach(m => renderHTML(m.role === 'user' ? 'user' : 'ai', m.content, false));
             } else {
-                renderHTML('ai', `Welcome back, **${currentUserName}**! Your private secure space is ready. How can I assist you today?`);
+                renderHTML('ai', `Welcome back, **${currentUserName}**! Your private secure space is ready. How can I assist you today?`, false);
             }
         } catch(e) { document.getElementById("chatBox").innerHTML = ""; }
     }
 
+    const loadingTexts = ["Thinking...", "Analyzing deeply...", "Fetching intelligence...", "Structuring data...", "Generating response..."];
+    
+    // 🔥 ZERO-TIMER, DYNAMIC STREAMING ENGINE 🔥
     async function sendChat() {
         const input = document.getElementById("chatInput");
         const sendBtn = document.getElementById("sendBtn");
         const val = input.value.trim();
         if(!val) return;
 
-        // 🔥 Guest Limit Logic
         if (!currentUserEmail) {
             if (guestMessageCount >= MAX_GUEST_MESSAGES) {
-                renderHTML('ai', "🔒 **Free Limit Reached!**<br>You have used your 3 free guest questions. Please **Sign in / Sign up** to continue your conversation without any limits.");
+                renderHTML('ai', "🔒 **Free Limit Reached!**<br>Please **Sign in / Sign up** to continue your conversation without any limits.", false);
                 setTimeout(() => showLoginScreen(), 3000);
                 return;
             }
             guestMessageCount++;
         }
 
-        renderHTML('user', val);
+        renderHTML('user', val, false);
         input.value = ""; input.disabled = true; sendBtn.disabled = true;
 
-        // ✨ Animated Bouncing Dots Loader
         const loaderId = "loader-" + Date.now();
-        const loaderHTML = `<div id="${loaderId}" class="msg msg-ai"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+        const loaderHTML = `<div id="${loaderId}" class="msg msg-ai"><div class="status-cycle"><div class="spinner-small"></div><span id="text-${loaderId}" class="status-text-anim">${loadingTexts[0]}</span></div></div>`;
         document.getElementById("chatBox").insertAdjacentHTML('beforeend', loaderHTML);
         document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 
-        try {
-            const payload = { 
-                action: "chat", 
-                email: currentUserEmail || "Guest",
-                message: val, 
-                history: chatMemoryContext,
-                modelType: selectedModelType 
-            };
-            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-            const data = await res.json();
+        let loadIndex = 0;
+        const loadingInterval = setInterval(() => {
+            loadIndex = (loadIndex + 1) % loadingTexts.length;
+            const textSpan = document.getElementById(`text-${loaderId}`);
+            if(textSpan) {
+                textSpan.classList.remove("status-text-anim");
+                void textSpan.offsetWidth; 
+                textSpan.classList.add("status-text-anim");
+                textSpan.innerText = loadingTexts[loadIndex];
+            }
+        }, 1200); 
+
+        let aiReply = ""; 
+        let typedReply = ""; 
+        let isStreamDone = false;
+        let hasStartedTyping = false;
+        let openRouterError = null;
+
+        const startTyper = () => {
+            hasStartedTyping = true;
+            clearInterval(loadingInterval);
             
-            document.getElementById(loaderId).remove();
-            renderHTML('ai', data.reply);
-            chatMemoryContext.push({role: "user", content: val}, {role: "assistant", content: data.reply});
+            const loaderEl = document.getElementById(loaderId);
+            if(loaderEl) loaderEl.remove();
+
+            if (isStreamDone && aiReply.trim() === "") {
+                let errMsg = openRouterError ? `⚠️ API Limit/Error: ${openRouterError}` : "⚠️ Server (OpenRouter) is currently overloaded or didn't respond. Please try again.";
+                renderHTML('ai', errMsg, false);
+                input.disabled = false; sendBtn.disabled = false; input.focus();
+                return;
+            }
+
+            const box = document.getElementById("chatBox");
+            const div = document.createElement("div");
+            div.className = "msg msg-ai";
+            box.appendChild(div);
+
+            // Butter-Smooth Dynamic Catch-up Typer
+            const typeInterval = setInterval(() => {
+                if (document.hidden) {
+                    typedReply = aiReply; 
+                } else if (typedReply.length < aiReply.length) {
+                    // Automatically adjusts typing speed based on how fast the stream is downloading
+                    let charsToAdd = Math.max(1, Math.floor((aiReply.length - typedReply.length) / 5)); 
+                    typedReply += aiReply.substring(typedReply.length, typedReply.length + charsToAdd);
+                }
+                
+                if (typedReply.length < aiReply.length || !isStreamDone) {
+                    div.innerHTML = marked.parse(typedReply) + '<span class="typing-cursor"></span>';
+                    box.scrollTop = box.scrollHeight;
+                } 
+                else if (isStreamDone && typedReply.length >= aiReply.length) {
+                    clearInterval(typeInterval);
+                    div.innerHTML = marked.parse(typedReply);
+                    addInteractiveElements(div);
+                    box.scrollTop = box.scrollHeight;
+                    
+                    chatMemoryContext.push({role: "user", content: val}, {role: "assistant", content: aiReply});
+
+                    fetch(GAS_URL, { 
+                        method: "POST", 
+                        body: JSON.stringify({ action: "saveChat", email: currentUserEmail || "Guest", userMessage: val, aiReply: aiReply }) 
+                    }).catch(e => {});
+                    
+                    input.disabled = false; sendBtn.disabled = false; input.focus();
+                }
+            }, 20); // 50 FPS Smoothness
+        };
+
+        try {
+            const payload = { modelType: selectedModelType, messages: [...chatMemoryContext, { role: "user", content: val }] };
+            const response = await fetch(WORKER_URL, { 
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload) 
+            });
+
+            if (!response.ok) throw new Error("Server Error");
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+
+            // 🌐 NETWORK DOWNLOAD BUFFER (Instant Trigger)
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    let buffer = decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+
+                    for (const line of lines) {
+                        if (line.trim() === "") continue;
+                        if (line.startsWith("data: ")) {
+                            const dataStr = line.replace("data: ", "").trim();
+                            if (dataStr === "[DONE]") break;
+                            try {
+                                const json = JSON.parse(dataStr);
+                                if (json.error) {
+                                    openRouterError = json.error.message;
+                                } else if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
+                                    const chunkText = json.choices[0].delta.content;
+                                    if (chunkText) {
+                                        aiReply += chunkText;
+                                        // 🎯 MAGIC: The millisecond the first word arrives, start typing!
+                                        if (!hasStartedTyping && aiReply.trim().length > 0) {
+                                            startTyper();
+                                        }
+                                    }
+                                }
+                            } catch (e) { }
+                        }
+                    }
+                }
+            } catch(e) {}
+            
+            isStreamDone = true;
+            
+            // Failsafe: If stream finished but typing never started (e.g., error/empty response)
+            if (!hasStartedTyping) {
+                startTyper();
+            }
+
         } catch (e) { 
-            document.getElementById(loaderId).remove();
-            renderHTML('ai', "⚠️ Connection error. Please try again."); 
+            clearInterval(loadingInterval);
+            const loaderEl = document.getElementById(loaderId);
+            if(loaderEl) loaderEl.remove();
+            renderHTML('ai', "⚠️ Connection error. Please check your internet and try again.", false); 
+            input.disabled = false; sendBtn.disabled = false; input.focus();
         }
-        
-        input.disabled = false; sendBtn.disabled = false; input.focus();
     }
 
-    function renderHTML(role, text) {
+    function renderHTML(role, text, isTyping = false) {
         const box = document.getElementById("chatBox");
         const div = document.createElement("div");
         div.className = `msg ${role === 'user' ? 'msg-user' : 'msg-ai'}`;
         div.innerHTML = marked.parse(text);
-
-        if(role === 'ai') {
-            const btn = document.createElement("button");
-            btn.className = "speak-btn";
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
-            btn.onclick = () => {
-                window.speechSynthesis.cancel();
-                let cleanText = div.cloneNode(true);
-                cleanText.querySelectorAll('pre').forEach(p => p.remove());
-                let finalAudioText = cleanText.innerText.replace("Read Aloud", "");
-                const utt = new SpeechSynthesisUtterance(finalAudioText);
-                utt.voice = /[\u0900-\u097F]/.test(finalAudioText) ? hinVoice : engVoice;
-                window.speechSynthesis.speak(utt);
-            };
-            div.appendChild(btn);
-
-            div.querySelectorAll('pre').forEach(p => {
-                const codeBlock = p.querySelector('code');
-                const cp = document.createElement('button'); 
-                cp.className = 'copy-code-btn'; cp.innerText = 'Copy';
-                cp.onclick = async () => { 
-                    try { await navigator.clipboard.writeText(codeBlock.innerText); cp.innerText = 'Copied!'; setTimeout(() => cp.innerText = 'Copy', 2000); } 
-                    catch (err) { cp.innerText = 'Error'; }
-                };
-                p.appendChild(cp);
-                if(codeBlock) hljs.highlightElement(codeBlock);
-            });
-            
-            renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}] });
-        }
+        if (role === 'ai') addInteractiveElements(div);
         box.appendChild(div);
         box.scrollTop = box.scrollHeight;
+    }
+
+    function addInteractiveElements(div) {
+        const btn = document.createElement("button");
+        btn.className = "speak-btn";
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
+        btn.onclick = () => {
+            window.speechSynthesis.cancel();
+            let cleanText = div.cloneNode(true);
+            cleanText.querySelectorAll('pre').forEach(p => p.remove());
+            let finalAudioText = cleanText.innerText.replace("Read Aloud", "");
+            const utt = new SpeechSynthesisUtterance(finalAudioText);
+            utt.voice = /[\u0900-\u097F]/.test(finalAudioText) ? hinVoice : engVoice;
+            window.speechSynthesis.speak(utt);
+        };
+        div.appendChild(btn);
+
+        div.querySelectorAll('pre').forEach(p => {
+            const codeBlock = p.querySelector('code');
+            const cp = document.createElement('button'); 
+            cp.className = 'copy-code-btn'; cp.innerText = 'Copy';
+            
+            cp.onclick = function() { 
+                const text = codeBlock.innerText || codeBlock.textContent;
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        cp.innerText = 'Copied!'; setTimeout(() => cp.innerText = 'Copy', 2000);
+                    }).catch(() => fallbackCopy(text, cp));
+                } else {
+                    fallbackCopy(text, cp);
+                }
+            };
+            
+            p.appendChild(cp);
+            hljs.highlightElement(codeBlock);
+        });
+        
+        renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}] });
+    }
+
+    function fallbackCopy(text, btn) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed"; ta.style.left = "-9999px"; ta.style.top = "-9999px";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try { document.execCommand('copy'); btn.innerText = 'Copied!'; } catch (e) { btn.innerText = 'Error'; }
+        document.body.removeChild(ta); setTimeout(() => btn.innerText = 'Copy', 2000);
     }
 </script>
 </body>
