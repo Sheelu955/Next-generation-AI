@@ -510,7 +510,7 @@
                 // Handle case where nothing was received
                 const loaderEl = document.getElementById(loaderId);
                 if(loaderEl) loaderEl.remove();
-                renderHTML('ai', "⚠️ Server (OpenRouter) is currently overloaded or didn't respond. Please try again.", false);
+                renderHTML('ai', "⚠️ Server is currently overloaded or didn't respond. Please try again we are working to fix it.", false);
             } else {
                 // Finalize AI message, remove cursor, add buttons
                 activeAiDiv.innerHTML = marked.parse(aiReply);
