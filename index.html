@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
@@ -57,7 +57,7 @@
         .model-selector-btn { display: flex; align-items: center; gap: 8px; background: transparent; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.2s; color: #666;}
         .model-selector-btn:hover { background: #f4f4f4; color: #000;}
         .model-selector-btn strong { color: #000; }
-        .papa-popup { position: absolute; top: 60px; left: 20px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; z-index: 100; min-width: 260px; overflow: hidden; }
+        .papa-popup { position: absolute; top: 60px; left: 20px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; z-index: 100; min-width: 260px; max-height: 400px; overflow-y: auto; }
         .model-option { padding: 12px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #f9f9f9; }
         .model-option:hover { background: #f9f9f9; }
         .model-option.selected { border-left: 4px solid #000; background: #f4f4f4; }
@@ -85,22 +85,22 @@
         .copy-code-btn { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #ddd; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: 0.2s; color: #333;}
         .copy-code-btn:hover { background: #f0f0f0; }
         
-        /* Interactive Buttons (Copy, TTS) */
+        /* Interactive Buttons */
         .msg-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
         .action-btn { background: transparent; border: none; color: #888; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; font-weight: 500; transition: color 0.2s;}
         .action-btn:hover { color: #000; }
-        .action-btn.active-stop { color: #d93025; }
+        .active-stop { color: #d93025 !important; }
 
-        /* User Message Copy Prompt */
         .copy-prompt-container { display: flex; justify-content: flex-end; margin-top: 5px; }
 
         /* 🧠 SMART DYNAMIC LOADER CSS */
-        .status-cycle { display: flex; align-items: center; gap: 10px; color: #666; font-style: italic; font-size: 0.95rem; padding: 8px 12px; background: #f9f9f9; border-radius: 12px; border: 1px solid #e5e5e5; }
+        .status-cycle { display: flex; align-items: center; gap: 10px; color: #666; font-style: italic; font-size: 0.95rem; padding: 8px 12px; background: #f9f9f9; border-radius: 12px; border: 1px solid #e5e5e5; width: max-content;}
         .spinner-small { width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
         .status-text-anim { animation: fadeInSlideUp 0.3s ease-out forwards; }
 
         /* --- ✍️ FOOTER --- */
         #input-area { padding: 10px 20px 20px; background: #fff; width: 100%; border-top: 1px solid #f0f0f0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+        #image-preview-wrapper { display: none; position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 10px; margin-left: 10px; }
         .input-wrapper { display: flex; gap: 12px; border: 1px solid #d1d5db; padding: 10px 10px 10px 16px; border-radius: 24px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.3s;}
         .input-wrapper:focus-within { border-color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         #chatInput { flex: 1; border: none; outline: none; font-size: 1rem; color: #000; }
@@ -168,19 +168,38 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
             </button>
             <div id="papa-popup" class="papa-popup">
-                <div class="model-option selected" id="opt-2.0" onclick="selectModel('2.0', 'Next Gen 2.0')">
+                <div class="model-option selected" id="opt-0" onclick="selectModel(0, 'Next Gen 2.0')">
                     <strong style="font-size: 1rem;">Next Gen 2.0</strong>
-                    <span>बेसिक चैट और फास्ट जवाब के लिए</span>
+                    <span style="font-size: 0.75rem; color: #666;">सबसे हल्का और तेज़</span>
                 </div>
-                <div class="model-option" id="opt-3.1" onclick="selectModel('3.1', 'Next Gen 3.1')">
-                    <strong style="font-size: 1rem;">Next Gen 3.1</strong>
-                    <span>मैथ, कोडिंग और रिज़निंग के लिए</span>
+                <div class="model-option" id="opt-1" onclick="selectModel(1, 'Next Gen 4.0')">
+                    <strong style="font-size: 1rem;">Next Gen 4.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">छोटा और कुशल</span>
+                </div>
+                <div class="model-option" id="opt-2" onclick="selectModel(2, 'Next Gen 6.0')">
+                    <strong style="font-size: 1rem;">Next Gen 6.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">मध्यम क्षमता</span>
+                </div>
+                <div class="model-option" id="opt-3" onclick="selectModel(3, 'Next Gen 8.0')">
+                    <strong style="font-size: 1rem;">Next Gen 8.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">फास्ट प्रोसेसिंग</span>
+                </div>
+                <div class="model-option" id="opt-4" onclick="selectModel(4, 'Next Gen 10.0')">
+                    <strong style="font-size: 1rem;">Next Gen 10.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">एडवांस्ड तर्क और समझ</span>
+                </div>
+                <div class="model-option" id="opt-5" onclick="selectModel(5, 'Next Gen 12.0')">
+                    <strong style="font-size: 1rem;">Next Gen 12.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">हाई-एंड लॉजिक</span>
+                </div>
+                <div class="model-option" id="opt-6" onclick="selectModel(6, 'Next Gen 14.0')">
+                    <strong style="font-size: 1rem;">Next Gen 14.0</strong>
+                    <span style="font-size: 0.75rem; color: #666;">सबसे शक्तिशाली महाबली</span>
                 </div>
             </div>
         </div>
         
         <div class="header-actions">
-            <!-- New Chat Attribute restored -->
             <button class="btn-outline" id="new-chat-btn" onclick="startNewChat()" style="display: none;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> <span class="hide-mobile">New Chat</span>
             </button>
@@ -193,14 +212,12 @@
     <main id="chatBox"></main>
     
     <footer id="input-area">
-        <!-- IMAGE PREVIEW WRAPPER -->
-        <div id="image-preview-wrapper" style="display: none; position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 10px; margin-left: 10px;">
+        <div id="image-preview-wrapper">
             <img id="image-preview" src="" style="width: 100%; height: 100%; object-fit: cover;">
             <button id="remove-img-btn" onclick="removeImage()" style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✖</button>
         </div>
 
         <div class="input-wrapper">
-            <!-- CAMERA BUTTON (Vision Feature) -->
             <button id="camBtn" onclick="document.getElementById('fileInput').click()" style="background: none; border: none; color: #666; font-size: 1.2rem; cursor: pointer; margin-right: 8px; display: flex; align-items: center; justify-content: center;" title="Upload Image">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
             </button>
@@ -215,7 +232,6 @@
 </div>
 
 <script>
-    // 🔗 API URLs 
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwHznkQVxAx6yk8TgI5R8RQDUgcEuBpxYamU-O1EvO5HMIrLXnC7xqWnRxGkSDRctVz/exec";
     const WORKER_URL = "https://rapid-cake-a47a.katiyarsheelu07.workers.dev/";
     
@@ -223,19 +239,17 @@
 
     let currentUserEmail = localStorage.getItem("nextgen_user_email") || null;
     let currentUserName = localStorage.getItem("nextgen_user_name") || "Guest";
-    let selectedModelType = "2.0"; 
+    let selectedModelIndex = 0; 
     let chatMemoryContext = [];
     let isRegisterMode = false;
     
     let guestMessageCount = 0;
     const MAX_GUEST_MESSAGES = 3;
-
-    // IMAGE LOGIC STATE
     let currentBase64Image = null;
 
     function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
-    // 🎙️ PREMIUM BROWSER VOICE SETUP
+    // 🎙️ ORIGINAL BROWSER VOICE SETUP (Premium Native Voices)
     let engVoice = null, hinVoice = null;
     function loadVoices() {
         let voices = window.speechSynthesis.getVoices();
@@ -244,27 +258,6 @@
     }
     window.speechSynthesis.onvoiceschanged = loadVoices;
     loadVoices();
-
-    // 📋 Global Copy Function
-    function copyToClipboard(text, btnElement, originalText) {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                btnElement.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
-                setTimeout(() => btnElement.innerHTML = originalText, 2000);
-            }).catch(() => fallbackCopyGlobal(text, btnElement, originalText));
-        } else {
-            fallbackCopyGlobal(text, btnElement, originalText);
-        }
-    }
-
-    function fallbackCopyGlobal(text, btn, originalText) {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed"; ta.style.left = "-9999px"; ta.style.top = "-9999px";
-        document.body.appendChild(ta); ta.focus(); ta.select();
-        try { document.execCommand('copy'); btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`; } catch (e) { btn.innerHTML = 'Error'; }
-        document.body.removeChild(ta); setTimeout(() => btn.innerHTML = originalText, 2000);
-    }
 
     window.onload = () => { 
         showChatScreen();
@@ -291,12 +284,13 @@
         document.getElementById('registerWarning').style.display = isRegisterMode ? 'block' : 'none'; 
         document.getElementById('login-status').innerText = "";
     }
+    
     function togglePapa() { const popup = document.getElementById('papa-popup'); popup.style.display = popup.style.display === 'block' ? 'none' : 'block'; }
-    function selectModel(type, name) {
-        selectedModelType = type;
+    function selectModel(index, name) {
+        selectedModelIndex = index;
         document.getElementById('active-model-name').innerText = name;
         document.querySelectorAll('.model-option').forEach(opt => opt.classList.remove('selected'));
-        document.getElementById(`opt-${type}`).classList.add('selected');
+        document.getElementById(`opt-${index}`).classList.add('selected');
         togglePapa();
     }
     document.addEventListener('click', function(event) {
@@ -304,7 +298,6 @@
         if (popup && popup.style.display === 'block' && !popup.contains(event.target) && !btn.contains(event.target)) popup.style.display = 'none';
     });
 
-    // Handle Image Selection
     function handleImageSelect(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -404,7 +397,7 @@
         } catch(e) { document.getElementById("chatBox").innerHTML = ""; }
     }
 
-    // 🔥 REAL-TIME ENGINE (No Artificial Delay) 🔥
+    // 🔥 ZERO-DELAY, DYNAMIC STREAMING ENGINE 🔥
     async function sendChat() {
         const input = document.getElementById("chatInput");
         const sendBtn = document.getElementById("sendBtn");
@@ -423,13 +416,11 @@
         }
 
         let payloadImage = currentBase64Image;
-        // Render User Message
         renderHTML('user', val || "📷 Image Attached", false, payloadImage);
         
         input.value = ""; input.disabled = true; sendBtn.disabled = true;
         removeImage();
 
-        // 🧠 SIMPLE "Thinking..." (No Interval, No Extra Texts)
         const loaderId = "loader-" + Date.now();
         const loaderHTML = `<div id="${loaderId}" class="msg msg-ai"><div class="status-cycle"><div class="spinner-small"></div><span class="status-text-anim">Thinking...</span></div></div>`;
         document.getElementById("chatBox").insertAdjacentHTML('beforeend', loaderHTML);
@@ -441,7 +432,7 @@
 
         try {
             const payload = { 
-                modelType: selectedModelType, 
+                modelIndex: selectedModelIndex, 
                 messages: [...chatMemoryContext, { role: "user", content: val || "इस इमेज को स्कैन करो।" }] 
             };
             if (payloadImage) payload.image = payloadImage;
@@ -457,7 +448,6 @@
             const reader = response.body.getReader();
             const decoder = new TextDecoder("utf-8");
 
-            // 🎯 JSON CHUNK BUG FIX & REAL-TIME DOM UPDATE 🎯
             let streamBuffer = "";
             try {
                 while (true) {
@@ -482,37 +472,31 @@
                                     if (chunkText) {
                                         aiReply += chunkText;
                                         
-                                        // 🚀 INSTANT RENDER (0 Delay)
                                         if (!hasStartedTyping) {
                                             hasStartedTyping = true;
                                             const loaderEl = document.getElementById(loaderId);
-                                            if(loaderEl) loaderEl.remove(); // Remove 'Thinking...'
+                                            if(loaderEl) loaderEl.remove();
                                             
-                                            // Create AI Message Box instantly
                                             activeAiDiv = document.createElement("div");
                                             activeAiDiv.className = "msg msg-ai";
                                             document.getElementById("chatBox").appendChild(activeAiDiv);
                                         }
                                         
-                                        // Type exactly as fast as the network receives it
                                         activeAiDiv.innerHTML = marked.parse(aiReply) + '<span class="typing-cursor"></span>';
                                         document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
                                     }
                                 }
-                            } catch (e) { } // Silent catch for incomplete JSON
+                            } catch (e) { } 
                         }
                     }
                 }
             } catch(e) {}
             
-            // Stream Finished!
             if (!hasStartedTyping) {
-                // Handle case where nothing was received
                 const loaderEl = document.getElementById(loaderId);
                 if(loaderEl) loaderEl.remove();
-                renderHTML('ai', "⚠️ Server is currently overloaded or didn't respond. Please try again we are working to fix it.", false);
+                renderHTML('ai', "⚠️ Server is currently overloaded or didn't respond. Please try again.", false);
             } else {
-                // Finalize AI message, remove cursor, add buttons
                 activeAiDiv.innerHTML = marked.parse(aiReply);
                 addInteractiveElements(activeAiDiv, aiReply);
                 
@@ -545,28 +529,25 @@
             contentHtml += `<br><img src="${imageUrl}" style="max-width: 200px; border-radius: 8px; margin-top: 8px; display: block; border: 1px solid #ddd;">`;
         }
         
-        // 📋 User Copy Prompt Button
         if (role === 'user') {
             contentHtml += `
             <div class="copy-prompt-container">
-                <button class="action-btn" onclick="copyToClipboard(\`${text.replace(/`/g, '\\`')}\`, this, '<svg width=\\'12\\' height=\\'12\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'2\\'><rect x=\\'9\\' y=\\'9\\' width=\\'13\\' height=\\'13\\' rx=\\'2\\' ry=\\'2\\'></rect><path d=\\'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\\'></path></svg> Copy Prompt')">
+                <button class="action-btn" onclick="copyToClipboard(this.parentElement.parentElement.innerText.replace('Copy Prompt', '').trim(), this, '<svg width=\\'12\\' height=\\'12\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'2\\'><rect x=\\'9\\' y=\\'9\\' width=\\'13\\' height=\\'13\\' rx=\\'2\\' ry=\\'2\\'></rect><path d=\\'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\\'></path></svg> Copy Prompt')">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Prompt
                 </button>
             </div>`;
         }
         
         div.innerHTML = contentHtml;
-        if (role === 'ai') addInteractiveElements(div, text); // Pass full text for AI
+        if (role === 'ai') addInteractiveElements(div, text); 
         box.appendChild(div);
         box.scrollTop = box.scrollHeight;
     }
 
-    // 🔊 ADD INTERACTIVE BUTTONS (Read Aloud, Mute/Stop, Copy Answer)
     function addInteractiveElements(div, fullAiText) {
         const actionsDiv = document.createElement("div");
         actionsDiv.className = "msg-actions";
         
-        // 1. Read Aloud / Stop (Mute) Button
         const speakBtn = document.createElement("button");
         speakBtn.className = "action-btn";
         speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
@@ -574,16 +555,14 @@
         let isSpeaking = false;
         speakBtn.onclick = () => {
             if (isSpeaking) {
-                // 🛑 MUTE / STOP
                 window.speechSynthesis.cancel();
                 isSpeaking = false;
                 speakBtn.classList.remove("active-stop");
                 speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
             } else {
-                // 🔊 PLAY
-                window.speechSynthesis.cancel(); // Stop anything else first
+                window.speechSynthesis.cancel(); 
                 let cleanText = div.cloneNode(true);
-                cleanText.querySelectorAll('pre, .msg-actions').forEach(el => el.remove());
+                cleanText.querySelectorAll('pre, .msg-actions, .copy-prompt-container').forEach(el => el.remove());
                 let finalAudioText = cleanText.innerText.replace(/[*#_`~]/g, "").trim();
                 
                 if (finalAudioText) {
@@ -604,7 +583,6 @@
             }
         };
 
-        // 2. Copy Answer Button
         const copyBtn = document.createElement("button");
         copyBtn.className = "action-btn";
         const originalCopyHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Answer`;
@@ -619,7 +597,6 @@
         actionsDiv.appendChild(copyBtn);
         div.appendChild(actionsDiv);
 
-        // Render Code Copy Buttons & Math
         div.querySelectorAll('pre').forEach(p => {
             const codeBlock = p.querySelector('code');
             const cp = document.createElement('button'); 
@@ -627,13 +604,7 @@
             
             cp.onclick = function() { 
                 const text = codeBlock.innerText || codeBlock.textContent;
-                if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(text).then(() => {
-                        cp.innerText = 'Copied!'; setTimeout(() => cp.innerText = 'Copy', 2000);
-                    }).catch(() => fallbackCopy(text, cp));
-                } else {
-                    fallbackCopy(text, cp);
-                }
+                copyToClipboard(text, cp, 'Copy');
             };
             
             p.appendChild(cp);
@@ -642,17 +613,6 @@
         
         renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}] });
     }
-
-    function fallbackCopy(text, btn) {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed"; ta.style.left = "-9999px"; ta.style.top = "-9999px";
-        document.body.appendChild(ta); ta.focus(); ta.select();
-        try { document.execCommand('copy'); btn.innerText = 'Copied!'; } catch (e) { btn.innerText = 'Error'; }
-        document.body.removeChild(ta); setTimeout(() => btn.innerText = 'Copy', 2000);
-    }
 </script>
 </body>
 </html>
-
-
