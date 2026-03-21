@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Next Gen AI | by Divy</title>
+    <title>Next Gen AI | Edge Light</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
+        /* 🌈 BREATHING BACKGROUND */
+        @keyframes breatheColors {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body { 
-            background-color: #ffffff; 
-            color: #000; 
+            background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #fccb90, #d57eeb);
+            background-size: 300% 300%;
+            animation: breatheColors 18s ease-in-out infinite;
+            color: #111; 
             height: 100vh; 
             height: 100dvh; 
             display: flex; 
@@ -26,593 +35,503 @@
             overflow: hidden; 
         }
 
+        /* ✨ SAMSUNG / GOOGLE STYLE EDGE LIGHTING */
+        #edge-lighting {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: inset 0 0 25px 8px rgba(255, 0, 255, 0.7), inset 0 0 50px 15px rgba(0, 255, 255, 0.7);
+            animation: edgeGlow 2s linear infinite;
+        }
+        #edge-lighting.active {
+            opacity: 1;
+        }
+        @keyframes edgeGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeScreen { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes blinkCursor { 50% { opacity: 0; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes blink { 50% { opacity: 0; } }
+        .typing-cursor { display: inline-block; width: 6px; height: 15px; background-color: #000; margin-left: 4px; animation: blink 0.7s infinite; vertical-align: middle; }
 
-        .typing-cursor { display: inline-block; width: 6px; height: 16px; background-color: #000; margin-left: 4px; animation: blinkCursor 0.7s infinite; vertical-align: middle; }
+        /* 💎 TRUE LIQUID CRYSTAL (GLASSMORPHISM) */
+        .glass {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+        }
+        .glass-heavy {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
 
         /* --- 🔐 LOGIN/REGISTER --- */
-        #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; height: 100%; text-align: center; max-width: 400px; margin: 0 auto; width: 100%; animation: fadeScreen 0.4s ease-out; }
-        .login-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;}
-        p.subtitle { color: #666; margin-bottom: 24px; font-size: 0.95rem; }
-        .auth-tabs { display: flex; width: 100%; margin-bottom: 20px; background: #f4f4f4; border-radius: 8px; padding: 4px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #666; cursor: pointer; border-radius: 6px; font-weight: 600; transition: 0.2s;}
-        .tab-btn.active { background: #ffffff; color: #000; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .auth-input { width: 100%; background: #ffffff; border: 1px solid #e5e5e5; padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; outline: none; font-size: 1rem; transition: 0.2s;}
-        .auth-input:focus { border-color: #000; }
-        .auth-btn { width: 100%; background: #000; border: none; padding: 14px; border-radius: 8px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;}
-        .auth-btn:hover { background: #333; }
-        .status-msg { margin-top: 12px; font-size: 0.9rem; font-weight: 600; color: #d93025; transition: 0.3s; }
-        .register-warning { display: none; font-size: 0.75rem; color: #666; background: #f9f9f9; border-left: 3px solid #d93025; padding: 8px 12px; margin-bottom: 15px; text-align: left; border-radius: 0 6px 6px 0; line-height: 1.4; }
+        #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; height: 100%; text-align: center; max-width: 400px; margin: 0 auto; width: 100%; z-index: 20;}
+        .login-box { padding: 40px 30px; border-radius: 24px; width: 100%; }
+        .login-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
+        .auth-tabs { display: flex; width: 100%; margin-bottom: 20px; background: rgba(255,255,255,0.5); border-radius: 12px; padding: 5px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #555; cursor: pointer; border-radius: 8px; font-weight: 600; transition: 0.3s;}
+        .tab-btn.active { background: #fff; color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .auth-input { width: 100%; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.8); padding: 14px 16px; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 1rem; transition: 0.3s;}
+        .auth-input:focus { background: #fff; box-shadow: 0 0 0 2px rgba(0,0,0,0.1); }
+        .auth-btn { width: 100%; background: #000; border: none; padding: 14px; border-radius: 12px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;}
+        .auth-btn:hover { background: #333; transform: translateY(-2px); }
 
-        /* --- 💬 CHAT HEADER --- */
-        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 900px; margin: 0 auto; position: relative; animation: fadeScreen 0.5s ease-out;}
-        #header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; background: #fff; z-index: 10;}
-        .header-left { display: flex; align-items: center; gap: 8px; }
-        .chat-header-logo { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.05); } 
+        /* --- 💬 HEADER --- */
+        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 900px; margin: 0 auto; position: relative; }
+        #header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.4);}
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .chat-header-logo { width: 38px; height: 38px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.8);}
         
-        .model-selector-btn { display: flex; align-items: center; gap: 8px; background: transparent; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.2s; color: #666;}
-        .model-selector-btn:hover { background: #f4f4f4; color: #000;}
-        .model-selector-btn strong { color: #000; }
-        .papa-popup { position: absolute; top: 60px; left: 20px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; z-index: 100; min-width: 260px; max-height: 400px; overflow-y: auto; }
-        .model-option { padding: 12px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid #f9f9f9; }
-        .model-option:hover { background: #f9f9f9; }
-        .model-option.selected { border-left: 4px solid #000; background: #f4f4f4; }
+        .model-selector-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8); padding: 8px 14px; border-radius: 14px; cursor: pointer; font-weight: 700; color: #222; font-size: 0.95rem; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
+        .model-selector-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-1px);}
         
+        .papa-popup { position: absolute; top: 65px; left: 20px; border-radius: 18px; display: none; z-index: 100; min-width: 200px; max-height: 65vh; overflow-y: auto; padding: 8px;}
+        .model-option { padding: 12px 16px; cursor: pointer; border-radius: 12px; margin-bottom: 4px; display: flex; align-items: center; transition: 0.2s;}
+        .model-option:hover { background: rgba(255,255,255,0.8); }
+        .model-option.selected { border-left: 4px solid #000; background: rgba(255,255,255,0.95); }
+        .model-title { font-weight: 700; font-size: 1rem; color: #000; }
+
         .header-actions { display: flex; gap: 8px; align-items: center; }
-        .btn-outline { background: transparent; border: 1px solid #e5e5e5; color: #666; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
-        .btn-outline:hover { background: #f4f4f4; color: #000; border-color: #d1d5db;}
-        .btn-black { background: #000; color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-black:hover { background: #333; }
+        .btn-outline { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); color: #333; border-radius: 12px; padding: 8px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
+        .btn-outline:hover { background: rgba(255,255,255,0.95); box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
 
         /* --- 💬 CHAT BOX --- */
-        #chatBox { flex: 1; padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
-        .msg { max-width: 85%; padding: 12px 18px; line-height: 1.6; border-radius: 18px; flex-shrink: 0; font-size: 1rem; animation: fadeInSlideUp 0.3s ease-out forwards; }
-        .msg-user { background: #f4f4f4; align-self: flex-end; border-bottom-right-radius: 4px; color: #000;}
-        .msg-ai { background: transparent; align-self: flex-start; width: 100%; overflow: visible; padding-left: 0; }
+        #chatBox { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 16px 22px; line-height: 1.6; border-radius: 22px; font-size: 1rem; animation: fadeInSlideUp 0.4s ease-out forwards; position: relative; }
         
-        .msg-ai p { margin-bottom: 12px; } .msg-ai p:last-child { margin-bottom: 0; }
-        .msg-ai ul, .msg-ai ol { margin-left: 24px; margin-bottom: 12px; }
-        .msg-ai table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; display: block; overflow-x: auto; white-space: nowrap;}
-        .msg-ai th, .msg-ai td { border: 1px solid #e5e5e5; padding: 10px 14px; text-align: left; }
-        .msg-ai th { background-color: #f9f9f9; font-weight: 600; color: #000; }
-        .msg-ai pre { position: relative; background: #f6f8fa; padding: 36px 16px 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; border: 1px solid #e1e4e8; }
-        .msg-ai code { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;}
-        
-        .copy-code-btn { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #ddd; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: 0.2s; color: #333;}
-        .copy-code-btn:hover { background: #f0f0f0; }
-        
-        /* Interactive Buttons */
-        .msg-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-        .action-btn { background: transparent; border: none; color: #888; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; font-weight: 500; transition: color 0.2s;}
-        .action-btn:hover { color: #000; }
-        .active-stop { color: #d93025 !important; }
+        .msg-user { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.6); align-self: flex-end; border-bottom-right-radius: 6px; color: #000; backdrop-filter: blur(20px); box-shadow: 0 4px 20px rgba(0,0,0,0.04);}
+        .msg-ai { background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255,255,255,0.9); align-self: flex-start; border-bottom-left-radius: 6px; width: 100%; backdrop-filter: blur(25px); box-shadow: 0 6px 25px rgba(0,0,0,0.06);}
 
-        .copy-prompt-container { display: flex; justify-content: flex-end; margin-top: 5px; }
+        .msg-ai pre { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); padding: 36px 16px 16px; border-radius: 14px; overflow-x: auto; margin: 16px 0; box-shadow: inset 0 2px 10px rgba(0,0,0,0.03); }
+        .copy-code-btn { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #ddd; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; z-index: 5; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
 
-        /* 🧠 SMART DYNAMIC LOADER CSS */
-        .status-cycle { display: flex; align-items: center; gap: 10px; color: #666; font-style: italic; font-size: 0.95rem; padding: 8px 12px; background: #f9f9f9; border-radius: 12px; border: 1px solid #e5e5e5; width: max-content;}
-        .spinner-small { width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
-        .status-text-anim { animation: fadeInSlideUp 0.3s ease-out forwards; }
+        /* Interactive Actions */
+        .msg-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+        .action-btn { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); color: #444; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);}
+        .action-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08);}
+        .stop-active { color: #d93025 !important; background: rgba(217, 48, 37, 0.1) !important; border-color: rgba(217, 48, 37, 0.3) !important;}
+        
+        .copy-prompt-container { display: flex; justify-content: flex-end; margin-top: 10px; }
+
+        /* 🌀 LOGO LOADER */
+        @keyframes pulseLogo {
+            0% { transform: scale(0.95); opacity: 0.7; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,1)); }
+            100% { transform: scale(0.95); opacity: 0.7; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+        }
+        .logo-loader-container { display: flex; align-items: center; gap: 15px; padding: 12px; border-radius: 20px;}
+        .logo-loader-img { width: 48px; height: 48px; border-radius: 14px; animation: pulseLogo 1.8s infinite ease-in-out; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
+        .logo-loader-text { font-weight: 700; color: #444; font-size: 1.05rem; animation: blink 1.5s infinite; }
+
+        /* ⏹️ STOP GENERATION BUTTON */
+        .stop-gen-wrapper { position: absolute; bottom: 100px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none;}
+        .stop-gen-btn { pointer-events: auto; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,1); padding: 12px 24px; border-radius: 30px; font-weight: 700; color: #d93025; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.15); backdrop-filter: blur(15px); transition: 0.3s; animation: fadeInSlideUp 0.3s ease-out;}
+        .stop-gen-btn:hover { background: #fff; transform: scale(1.05); }
 
         /* --- ✍️ FOOTER --- */
-        #input-area { padding: 10px 20px 20px; background: #fff; width: 100%; border-top: 1px solid #f0f0f0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
-        #image-preview-wrapper { display: none; position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 10px; margin-left: 10px; }
-        .input-wrapper { display: flex; gap: 12px; border: 1px solid #d1d5db; padding: 10px 10px 10px 16px; border-radius: 24px; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.3s;}
-        .input-wrapper:focus-within { border-color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        #chatInput { flex: 1; border: none; outline: none; font-size: 1rem; color: #000; }
-        #sendBtn { background: #000; border: none; width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0;}
-        #sendBtn:hover { background: #333; transform: scale(1.05); }
-        #sendBtn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        #input-area { padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); z-index: 10; border-top: 1px solid rgba(255,255,255,0.5);}
+        #image-preview-wrapper { display: none; position: relative; width: 65px; height: 65px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; margin-left: 10px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 2px solid #fff;}
+        .input-wrapper { display: flex; gap: 12px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); padding: 10px 14px; border-radius: 30px; align-items: center; transition: 0.3s; backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(0,0,0,0.08);}
+        .input-wrapper:focus-within { background: rgba(255,255,255,0.95); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+        #chatInput { flex: 1; border: none; outline: none; font-size: 1.05rem; color: #000; background: transparent; font-weight: 500;}
+        #chatInput::placeholder { color: #888; }
+        
+        #sendBtn { background: #000; border: none; width: 42px; height: 42px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);}
+        #sendBtn:hover { transform: scale(1.08); background: #222; box-shadow: 0 6px 16px rgba(0,0,0,0.3);}
+        #sendBtn:disabled { background: rgba(0,0,0,0.3); cursor: not-allowed; transform: none; box-shadow: none;}
 
-        /* 📱 RESPONSIVE DESIGN */
-        @media (max-width: 768px) {
-            #header { padding: 10px 12px; }
-            .header-left { gap: 4px; }
-            .chat-header-logo { width: 28px; height: 28px; border-radius: 6px; }
-            .model-selector-btn { font-size: 0.85rem; padding: 6px 8px; gap: 4px;}
-            .btn-outline, .btn-black { padding: 6px 10px; font-size: 0.75rem; }
-            .header-actions { gap: 4px; }
-            #chatBox { padding: 15px 12px; gap: 18px;}
-            .msg { max-width: 95%; padding: 10px 14px; font-size: 0.95rem; }
-            #input-area { padding: 8px 12px 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
-            .input-wrapper { padding: 8px 8px 8px 14px; }
-            #chatInput { font-size: 0.95rem; }
-            .papa-popup { left: 10px; min-width: 220px; top: 55px; }
-            .hide-mobile { display: none; }
+        @media (max-width: 768px) { 
+            .msg { max-width: 95%; padding: 14px 18px;} 
+            .hide-mobile { display: none; } 
+            .input-wrapper { padding: 8px 12px; }
+            .papa-popup { left: 10px; right: 10px; min-width: unset; }
+            #header { padding: 10px 15px; }
         }
     </style>
 </head>
 <body>
 
-<div id="login-section">
-    <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="login-logo" alt="Next Gen AI Logo">
-    <h1>Next Gen AI</h1>
-    <p class="subtitle">Developed in India by Divy</p>
-    
-    <div class="auth-tabs">
-        <button class="tab-btn active" id="tab-login" onclick="switchAuth('login')">Log in</button>
-        <button class="tab-btn" id="tab-register" onclick="switchAuth('register')">Sign up</button>
-    </div>
-    
-    <div id="email-box" style="width: 100%;">
-        <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;" onkeypress="if(event.key === 'Enter') sendOTP()">
-        <input type="email" id="emailInput" class="auth-input" placeholder="Email address" onkeypress="if(event.key === 'Enter') sendOTP()">
-        
-        <div id="registerWarning" class="register-warning">
-            <strong>Formal Notice:</strong> Creating multiple or duplicate accounts is strictly prohibited and is considered an unauthorized practice.
-        </div>
+<!-- ✨ EDGE LIGHTING CONTAINER ✨ -->
+<div id="edge-lighting"></div>
 
-        <button class="auth-btn" onclick="sendOTP()" id="otpBtn">Continue</button>
-        <button class="btn-outline" style="width: 100%; margin-top: 10px; justify-content: center; padding: 14px; border-radius: 8px;" onclick="showChatScreen()">Back to Chat</button>
+<div id="login-section" class="glass">
+    <div class="login-box glass-heavy">
+        <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="login-logo" alt="Logo">
+        <h1 style="font-weight: 800;">Next Gen AI</h1>
+        <p style="color:#666; margin-bottom:20px; font-weight:600;">Developed in India by Divy</p>
+        <div class="auth-tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchAuth('login')">Log in</button>
+            <button class="tab-btn" id="tab-register" onclick="switchAuth('register')">Sign up</button>
+        </div>
+        <div id="email-box">
+            <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;">
+            <input type="email" id="emailInput" class="auth-input" placeholder="Email address">
+            <button class="auth-btn" onclick="sendOTP()" id="otpBtn">Continue</button>
+            <button class="action-btn" style="width:100%; justify-content:center; margin-top:12px; background: transparent; border:none; box-shadow:none;" onclick="showChatScreen()">Skip for now</button>
+        </div>
+        <div id="otp-box" style="display: none;">
+            <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP">
+            <button class="auth-btn" onclick="verifyOTP()" id="verifyBtn">Verify & Enter</button>
+        </div>
+        <div id="login-status" style="color:#d93025; margin-top:15px; font-size:0.9rem; font-weight:700;"></div>
     </div>
-    
-    <div id="otp-box" style="display: none; width: 100%;">
-        <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP" maxlength="6" onkeypress="if(event.key === 'Enter') verifyOTP()">
-        <button class="auth-btn" onclick="verifyOTP()" id="verifyBtn">Verify & Enter</button>
-        <button class="btn-outline" style="width: 100%; margin-top: 10px; justify-content: center; padding: 14px; border-radius: 8px;" onclick="document.getElementById('otp-box').style.display='none'; document.getElementById('email-box').style.display='block';">Back</button>
-    </div>
-    <div id="login-status" class="status-msg"></div>
 </div>
 
 <div id="chat-section">
-    <header id="header">
+    <header id="header" class="glass">
         <div class="header-left">
-            <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="chat-header-logo" alt="Logo">
-            
-            <button class="model-selector-btn" onclick="togglePapa()">
-                <strong id="active-model-name">Next Gen 2.0</strong> 
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+            <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="chat-header-logo">
+            <button class="model-selector-btn" onclick="togglePopup()">
+                <span id="current-model-label">Next Gen 2.0</span> 
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg>
             </button>
-            <div id="papa-popup" class="papa-popup">
-                <div class="model-option selected" id="opt-0" onclick="selectModel(0, 'Next Gen 2.0')">
-                    <strong style="font-size: 1rem;">Next Gen 2.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">सबसे हल्का और तेज़</span>
+            
+            <!-- 🤖 CLEAN MODEL SELECTOR (Even Numbers) -->
+            <div id="papa-popup" class="papa-popup glass-heavy">
+                <div class="model-option selected" onclick="selectModel(0, 'Next Gen 2.0')">
+                    <span class="model-title">Next Gen 2.0</span>
                 </div>
-                <div class="model-option" id="opt-1" onclick="selectModel(1, 'Next Gen 4.0')">
-                    <strong style="font-size: 1rem;">Next Gen 4.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">छोटा और कुशल</span>
+                <div class="model-option" onclick="selectModel(1, 'Next Gen 4.0')">
+                    <span class="model-title">Next Gen 4.0</span>
                 </div>
-                <div class="model-option" id="opt-2" onclick="selectModel(2, 'Next Gen 6.0')">
-                    <strong style="font-size: 1rem;">Next Gen 6.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">मध्यम क्षमता</span>
+                <div class="model-option" onclick="selectModel(2, 'Next Gen 6.0')">
+                    <span class="model-title">Next Gen 6.0</span>
                 </div>
-                <div class="model-option" id="opt-3" onclick="selectModel(3, 'Next Gen 8.0')">
-                    <strong style="font-size: 1rem;">Next Gen 8.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">फास्ट प्रोसेसिंग</span>
+                <div class="model-option" onclick="selectModel(3, 'Next Gen 8.0')">
+                    <span class="model-title">Next Gen 8.0</span>
                 </div>
-                <div class="model-option" id="opt-4" onclick="selectModel(4, 'Next Gen 10.0')">
-                    <strong style="font-size: 1rem;">Next Gen 10.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">एडवांस्ड तर्क और समझ</span>
+                <div class="model-option" onclick="selectModel(4, 'Next Gen 10.0')">
+                    <span class="model-title">Next Gen 10.0</span>
                 </div>
-                <div class="model-option" id="opt-5" onclick="selectModel(5, 'Next Gen 12.0')">
-                    <strong style="font-size: 1rem;">Next Gen 12.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">हाई-एंड लॉजिक</span>
+                <div class="model-option" onclick="selectModel(5, 'Next Gen 12.0')">
+                    <span class="model-title">Next Gen 12.0</span>
                 </div>
-                <div class="model-option" id="opt-6" onclick="selectModel(6, 'Next Gen 14.0')">
-                    <strong style="font-size: 1rem;">Next Gen 14.0</strong>
-                    <span style="font-size: 0.75rem; color: #666;">सबसे शक्तिशाली महाबली</span>
+                <div class="model-option" onclick="selectModel(6, 'Next Gen 14.0')">
+                    <span class="model-title">Next Gen 14.0</span>
                 </div>
             </div>
         </div>
-        
         <div class="header-actions">
-            <button class="btn-outline" id="new-chat-btn" onclick="startNewChat()" style="display: none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> <span class="hide-mobile">New Chat</span>
+            <button class="btn-outline" id="new-chat-btn" onclick="location.reload()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg> <span class="hide-mobile">New Chat</span>
             </button>
-            
-            <button class="btn-black" id="header-signin-btn" onclick="showLoginScreen()">Sign in</button>
-            <button class="btn-outline" id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
+            <button class="btn-outline" id="header-signin-btn" style="display:none;" onclick="showLoginScreen()">Sign in</button>
+            <button class="btn-outline" id="logout-btn" style="display:none;" onclick="logout()">Logout</button>
         </div>
     </header>
 
     <main id="chatBox"></main>
-    
-    <footer id="input-area">
+
+    <!-- ⏹️ STOP BUTTON (Visible during generation) -->
+    <div class="stop-gen-wrapper">
+        <button id="stopGenBtn" class="stop-gen-btn" style="display: none;" onclick="stopGeneration()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="12" height="12"></rect></svg> Stop Generating
+        </button>
+    </div>
+
+    <footer id="input-area" class="glass">
         <div id="image-preview-wrapper">
-            <img id="image-preview" src="" style="width: 100%; height: 100%; object-fit: cover;">
-            <button id="remove-img-btn" onclick="removeImage()" style="position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✖</button>
+            <img id="image-preview" src="" style="width:100%; height:100%; object-fit:cover;">
+            <button onclick="clearImg()" style="position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px;">✕</button>
         </div>
-
         <div class="input-wrapper">
-            <button id="camBtn" onclick="document.getElementById('fileInput').click()" style="background: none; border: none; color: #666; font-size: 1.2rem; cursor: pointer; margin-right: 8px; display: flex; align-items: center; justify-content: center;" title="Upload Image">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <button onclick="document.getElementById('fileInput').click()" style="background:none; border:none; color:#555; font-size:1.4rem; cursor:pointer; padding:5px; transition:0.2s;" title="Upload Image">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
             </button>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
-
-            <input type="text" id="chatInput" placeholder="Message Next Gen AI..." autocomplete="off" onkeypress="if(event.key === 'Enter') sendChat()">
+            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImg(event)">
+            
+            <input type="text" id="chatInput" placeholder="Message Next Gen AI..." autocomplete="off" onkeypress="if(event.key==='Enter') sendChat()">
+            
             <button id="sendBtn" onclick="sendChat()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
         </div>
     </footer>
 </div>
 
 <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwHznkQVxAx6yk8TgI5R8RQDUgcEuBpxYamU-O1EvO5HMIrLXnC7xqWnRxGkSDRctVz/exec";
     const WORKER_URL = "https://rapid-cake-a47a.katiyarsheelu07.workers.dev/";
-    
-    marked.setOptions({ breaks: true, gfm: true });
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwHznkQVxAx6yk8TgI5R8RQDUgcEuBpxYamU-O1EvO5HMIrLXnC7xqWnRxGkSDRctVz/exec";
 
-    let currentUserEmail = localStorage.getItem("nextgen_user_email") || null;
-    let currentUserName = localStorage.getItem("nextgen_user_name") || "Guest";
-    let selectedModelIndex = 0; 
-    let chatMemoryContext = [];
-    let isRegisterMode = false;
-    
-    let guestMessageCount = 0;
-    const MAX_GUEST_MESSAGES = 3;
-    let currentBase64Image = null;
-
-    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-
-    // 🎙️ ORIGINAL BROWSER VOICE SETUP (Premium Native Voices)
+    let chatMemory = [], selectedModelIndex = 0, currentBase64 = null;
+    let userEmail = localStorage.getItem("nextgen_user_email");
     let engVoice = null, hinVoice = null;
-    function loadVoices() {
-        let voices = window.speechSynthesis.getVoices();
-        engVoice = voices.find(v => v.name.includes("Google UK English Female")) || voices.find(v => v.name.includes("Google US English")) || voices.find(v => v.name.includes("Microsoft Aria")) || voices.find(v => v.lang.startsWith("en-"));
-        hinVoice = voices.find(v => v.name.includes("Google हिन्दी")) || voices.find(v => v.name.includes("Microsoft Swara")) || voices.find(v => v.lang.startsWith("hi-"));
-    }
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    loadVoices();
+    let abortController = null; 
 
-    window.onload = () => { 
+    // 🎙️ PREMIUM BROWSER VOICE
+    function loadVoices() {
+        const v = window.speechSynthesis.getVoices();
+        engVoice = v.find(x => x.name.includes("Google UK English")) || v.find(x => x.lang.startsWith("en"));
+        hinVoice = v.find(x => x.name.includes("Google हिन्दी")) || v.find(x => x.name.includes("Microsoft Swara")) || v.find(x => x.lang.startsWith("hi"));
+    }
+    window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
+
+    window.onload = () => {
         showChatScreen();
-        if(currentUserEmail) {
-            document.getElementById('header-signin-btn').style.display = 'none';
-            document.getElementById('logout-btn').style.display = 'flex';
-            document.getElementById('new-chat-btn').style.display = 'flex';
+        if(userEmail) {
+            document.getElementById('header-signin-btn').style.display='none';
+            document.getElementById('logout-btn').style.display='flex';
             fetchHistory();
         } else {
-            document.getElementById('header-signin-btn').style.display = 'block';
-            document.getElementById('logout-btn').style.display = 'none';
-            document.getElementById('new-chat-btn').style.display = 'none';
-            renderHTML('ai', "Hello **Guest**! Welcome to Next Gen AI. You can ask me up to 3 questions before signing in. How can I assist you today?", false);
+            document.getElementById('header-signin-btn').style.display='flex';
+            renderMsg('ai', "नमस्ते! मैं **Next Gen AI** हूँ। पटेल ट्रेडर्स के लिए भारत में विकसित। कृपया मॉडल चुनें और पूछें! 🇮🇳");
         }
     };
 
-    function showLoginScreen() { document.getElementById('chat-section').style.display = 'none'; document.getElementById('login-section').style.display = 'flex'; switchAuth('login'); }
-    function showChatScreen() { document.getElementById('login-section').style.display = 'none'; document.getElementById('chat-section').style.display = 'flex'; }
-    function switchAuth(mode) {
-        isRegisterMode = (mode === 'register');
-        document.getElementById('tab-login').classList.toggle('active', !isRegisterMode);
-        document.getElementById('tab-register').classList.toggle('active', isRegisterMode);
-        document.getElementById('nameInput').style.display = isRegisterMode ? 'block' : 'none';
-        document.getElementById('registerWarning').style.display = isRegisterMode ? 'block' : 'none'; 
-        document.getElementById('login-status').innerText = "";
+    function togglePopup() { const p = document.getElementById('papa-popup'); p.style.display = p.style.display==='block'?'none':'block'; }
+    function selectModel(idx, label) {
+        selectedModelIndex = idx;
+        document.getElementById('current-model-label').innerText = label;
+        document.querySelectorAll('.model-option').forEach(el => el.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        togglePopup();
     }
-    
-    function togglePapa() { const popup = document.getElementById('papa-popup'); popup.style.display = popup.style.display === 'block' ? 'none' : 'block'; }
-    function selectModel(index, name) {
-        selectedModelIndex = index;
-        document.getElementById('active-model-name').innerText = name;
-        document.querySelectorAll('.model-option').forEach(opt => opt.classList.remove('selected'));
-        document.getElementById(`opt-${index}`).classList.add('selected');
-        togglePapa();
-    }
-    document.addEventListener('click', function(event) {
-        const popup = document.getElementById('papa-popup'); const btn = document.querySelector('.model-selector-btn');
-        if (popup && popup.style.display === 'block' && !popup.contains(event.target) && !btn.contains(event.target)) popup.style.display = 'none';
+    document.addEventListener('click', (e) => {
+        const popup = document.getElementById('papa-popup');
+        const btn = document.querySelector('.model-selector-btn');
+        if (popup && popup.style.display==='block' && !popup.contains(e.target) && !btn.contains(e.target)) popup.style.display='none';
     });
 
-    function handleImageSelect(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+    function handleImg(e) {
+        const file = e.target.files[0];
+        if(!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
-            currentBase64Image = e.target.result;
-            document.getElementById('image-preview').src = currentBase64Image;
+        reader.onload = (ev) => {
+            currentBase64 = ev.target.result;
+            document.getElementById('image-preview').src = currentBase64;
             document.getElementById('image-preview-wrapper').style.display = 'block';
             document.getElementById('chatInput').focus();
         };
         reader.readAsDataURL(file);
     }
+    function clearImg() { currentBase64 = null; document.getElementById('image-preview-wrapper').style.display = 'none'; document.getElementById('fileInput').value=""; }
 
-    function removeImage() {
-        currentBase64Image = null;
-        document.getElementById('image-preview').src = "";
-        document.getElementById('image-preview-wrapper').style.display = 'none';
-        document.getElementById('fileInput').value = "";
+    function copyToClipboard(text, btn, originalHtml) {
+        const ta = document.createElement("textarea"); ta.value = text;
+        document.body.appendChild(ta); ta.select();
+        try { 
+            document.execCommand('copy'); 
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`; 
+            setTimeout(() => btn.innerHTML = originalHtml, 2000);
+        } catch (e) { btn.innerText = "Error"; }
+        document.body.removeChild(ta);
     }
 
-    async function sendOTP() {
-        const email = document.getElementById('emailInput').value.trim();
-        const name = document.getElementById('nameInput').value.trim();
-        const statusObj = document.getElementById('login-status');
-        
-        if(!email) return statusObj.innerText = "Please enter an email address.";
-        if(!isValidEmail(email)) return statusObj.innerText = "Please enter a valid email format.";
-        if(isRegisterMode && !name) return statusObj.innerText = "Please enter your full name.";
-        
-        statusObj.innerText = ""; statusObj.style.color = "#d93025"; 
-        document.getElementById('otpBtn').innerText = "Scanning & Sending..."; document.getElementById('otpBtn').disabled = true;
-
-        try {
-            const payload = { action: isRegisterMode ? "register" : "sendOTP", email: email };
-            if (isRegisterMode) payload.name = name;
-            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
-            const data = await res.json();
-            
-            if(data.status === "success") {
-                document.getElementById('email-box').style.display = 'none'; document.getElementById('otp-box').style.display = 'block';
-                document.getElementById('otpInput').focus();
-            } else if (data.isDuplicate) {
-                statusObj.style.color = "#10a37f"; statusObj.innerText = "Account already exists! Redirecting to Log in...";
-                setTimeout(() => { switchAuth('login'); statusObj.innerText = ""; }, 1500);
-            } else throw new Error(data.error);
-        } catch(e) { statusObj.innerText = e.message || "Error sending OTP. Try again."; }
-        document.getElementById('otpBtn').innerText = "Continue"; document.getElementById('otpBtn').disabled = false;
-    }
-
-    async function verifyOTP() {
-        const email = document.getElementById('emailInput').value.trim();
-        const otp = document.getElementById('otpInput').value.trim();
-        const name = document.getElementById('nameInput').value.trim();
-        const statusObj = document.getElementById('login-status');
-        
-        if(!otp || otp.length < 6) return statusObj.innerText = "Please enter a valid 6-digit OTP.";
-        document.getElementById('verifyBtn').innerText = "Verifying..."; document.getElementById('verifyBtn').disabled = true;
-
-        try {
-            const payload = { action: isRegisterMode ? "verifyRegister" : "verifyOTP", email: email, otp: otp };
-            if (isRegisterMode) payload.name = name;
-            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
-            const data = await res.json();
-            
-            if(data.status === "success") {
-                localStorage.setItem("nextgen_user_email", email);
-                if(isRegisterMode) localStorage.setItem("nextgen_user_name", name);
-                location.reload();
-            } else statusObj.innerText = "Invalid OTP. Please try again.";
-        } catch(e) { statusObj.innerText = "Verification failed."; }
-        document.getElementById('verifyBtn').innerText = "Verify & Enter"; document.getElementById('verifyBtn').disabled = false;
-    }
-
-    function logout() { localStorage.clear(); location.reload(); }
-
-    async function startNewChat() {
-        document.getElementById("chatBox").innerHTML = "<div style='text-align:center; color:#666; font-size:0.9rem; padding: 20px;'>Clearing secure space...</div>";
-        chatMemoryContext = []; 
-        try {
-            await fetch(GAS_URL, { method: "POST", body: JSON.stringify({ action: "newChat", email: currentUserEmail }) });
-            document.getElementById("chatBox").innerHTML = "";
-            renderHTML('ai', `Hello **${currentUserName}**! A fresh session has started. What would you like to explore?`, false);
-        } catch(e) { fetchHistory(); }
-    }
-
-    async function fetchHistory() {
-        try {
-            const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify({ action: "getHistory", email: currentUserEmail }) });
-            const data = await res.json();
-            document.getElementById("chatBox").innerHTML = "";
-            if(data.history && data.history.length > 0) {
-                chatMemoryContext = data.history;
-                data.history.forEach(m => renderHTML(m.role === 'user' ? 'user' : 'ai', m.content, false));
-            } else {
-                renderHTML('ai', `Welcome back, **${currentUserName}**! Your private secure space is ready. How can I assist you today?`, false);
-            }
-        } catch(e) { document.getElementById("chatBox").innerHTML = ""; }
-    }
-
-    // 🔥 ZERO-DELAY, DYNAMIC STREAMING ENGINE 🔥
-    async function sendChat() {
-        const input = document.getElementById("chatInput");
-        const sendBtn = document.getElementById("sendBtn");
-        const val = input.value.trim();
-        const hasImage = !!currentBase64Image;
-
-        if(!val && !hasImage) return;
-
-        if (!currentUserEmail) {
-            if (guestMessageCount >= MAX_GUEST_MESSAGES) {
-                renderHTML('ai', "🔒 **Free Limit Reached!**<br>Please **Sign in / Sign up** to continue your conversation without any limits.", false);
-                setTimeout(() => showLoginScreen(), 3000);
-                return;
-            }
-            guestMessageCount++;
+    // 🛑 STOP GENERATION
+    function stopGeneration() {
+        if (abortController) {
+            abortController.abort();
+            document.getElementById('stopGenBtn').style.display = 'none';
+            document.getElementById('edge-lighting').classList.remove('active');
         }
+    }
 
-        let payloadImage = currentBase64Image;
-        renderHTML('user', val || "📷 Image Attached", false, payloadImage);
+    // 🔄 RETRY GENERATION
+    function retryChat(userText, imgBase64, aiDivToRemove) {
+        if(aiDivToRemove) aiDivToRemove.remove();
+        if(chatMemory.length >= 2 && chatMemory[chatMemory.length-1].role === 'assistant') {
+            chatMemory.pop();
+            chatMemory.pop(); 
+        }
+        document.getElementById('chatInput').value = userText;
+        if(imgBase64) {
+            currentBase64 = imgBase64;
+            document.getElementById('image-preview').src = currentBase64;
+            document.getElementById('image-preview-wrapper').style.display = 'block';
+        }
+        sendChat(true); 
+    }
+
+    // 🔥 0-DELAY ENGINE WITH EDGE LIGHTING & LOGO LOADER
+    async function sendChat(isRetry = false) {
+        const input = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const stopBtn = document.getElementById('stopGenBtn');
+        const edgeLight = document.getElementById('edge-lighting');
         
-        input.value = ""; input.disabled = true; sendBtn.disabled = true;
-        removeImage();
+        let val = input.value.trim();
+        let savedImg = currentBase64; 
+        
+        if(!val && !savedImg) return;
 
-        const loaderId = "loader-" + Date.now();
-        const loaderHTML = `<div id="${loaderId}" class="msg msg-ai"><div class="status-cycle"><div class="spinner-small"></div><span class="status-text-anim">Thinking...</span></div></div>`;
-        document.getElementById("chatBox").insertAdjacentHTML('beforeend', loaderHTML);
-        document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+        if(!isRetry) {
+            renderMsg('user', val || "📷 Image Attached", savedImg);
+        }
+        
+        input.value = ""; input.disabled = true; sendBtn.disabled = true; clearImg();
 
-        let aiReply = ""; 
-        let hasStartedTyping = false;
-        let activeAiDiv = null;
+        // 🌟 ACTIVATE SAMSUNG EDGE LIGHTING
+        edgeLight.classList.add('active');
+
+        // 🌀 LOGO LOADER
+        const loaderId = "L-" + Date.now();
+        const logoLoaderHtml = `
+            <div id="${loaderId}" class="msg msg-ai glass-heavy logo-loader-container">
+                <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="logo-loader-img">
+                <span class="logo-loader-text">Analyzing Request...</span>
+            </div>`;
+        document.getElementById('chatBox').insertAdjacentHTML('beforeend', logoLoaderHtml);
+        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+
+        let aiReply = "", aiDiv = null, hasStarted = false;
+        
+        abortController = new AbortController();
+        stopBtn.style.display = 'flex';
 
         try {
-            const payload = { 
-                modelIndex: selectedModelIndex, 
-                messages: [...chatMemoryContext, { role: "user", content: val || "इस इमेज को स्कैन करो।" }] 
-            };
-            if (payloadImage) payload.image = payloadImage;
+            const payload = { modelIndex: selectedModelIndex, messages: [...chatMemory, {role:"user", content: val || "Scan this image"}], image: savedImg };
 
-            const response = await fetch(WORKER_URL, { 
-                method: "POST", 
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload) 
+            const res = await fetch(WORKER_URL, {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(payload),
+                signal: abortController.signal
             });
 
-            if (!response.ok) throw new Error("Server Error");
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder("utf-8");
-
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
             let streamBuffer = "";
-            try {
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
 
-                    streamBuffer += decoder.decode(value, { stream: true });
-                    const lines = streamBuffer.split('\n');
-                    streamBuffer = lines.pop(); // Keep incomplete chunk in buffer
+            while(true) {
+                const {done, value} = await reader.read();
+                if(done) break;
+                
+                streamBuffer += decoder.decode(value, {stream:true});
+                let lines = streamBuffer.split('\n');
+                streamBuffer = lines.pop(); 
 
-                    for (const line of lines) {
-                        if (line.trim() === "") continue;
-                        if (line.startsWith("data: ")) {
-                            const dataStr = line.replace("data: ", "").trim();
-                            if (dataStr === "[DONE]") break;
-                            try {
-                                const json = JSON.parse(dataStr);
-                                if (json.error) {
-                                    aiReply = `⚠️ API Error: ${json.error.message}`;
-                                } else if (json.choices && json.choices.length > 0 && json.choices[0].delta) {
-                                    const chunkText = json.choices[0].delta.content;
-                                    if (chunkText) {
-                                        aiReply += chunkText;
-                                        
-                                        if (!hasStartedTyping) {
-                                            hasStartedTyping = true;
-                                            const loaderEl = document.getElementById(loaderId);
-                                            if(loaderEl) loaderEl.remove();
-                                            
-                                            activeAiDiv = document.createElement("div");
-                                            activeAiDiv.className = "msg msg-ai";
-                                            document.getElementById("chatBox").appendChild(activeAiDiv);
-                                        }
-                                        
-                                        activeAiDiv.innerHTML = marked.parse(aiReply) + '<span class="typing-cursor"></span>';
-                                        document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
-                                    }
+                for(let line of lines) {
+                    if(line.startsWith("data: ")) {
+                        let dataStr = line.replace("data: ", "").trim();
+                        if(dataStr === "[DONE]") break;
+                        try {
+                            const json = JSON.parse(dataStr);
+                            if (json.choices && json.choices[0].delta.content) {
+                                const content = json.choices[0].delta.content;
+                                if(!hasStarted) {
+                                    hasStarted = true;
+                                    // Turn off Edge Light as soon as AI starts typing
+                                    edgeLight.classList.remove('active');
+                                    
+                                    document.getElementById(loaderId).remove();
+                                    aiDiv = document.createElement("div"); aiDiv.className = "msg msg-ai glass-heavy";
+                                    document.getElementById('chatBox').appendChild(aiDiv);
                                 }
-                            } catch (e) { } 
-                        }
+                                aiReply += content;
+                                aiDiv.innerHTML = marked.parse(aiReply) + '<span class="typing-cursor"></span>';
+                                document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+                            }
+                        } catch(e){}
                     }
                 }
-            } catch(e) {}
-            
-            if (!hasStartedTyping) {
-                const loaderEl = document.getElementById(loaderId);
-                if(loaderEl) loaderEl.remove();
-                renderHTML('ai', "⚠️ Server is currently overloaded or didn't respond. Please try again.", false);
-            } else {
-                activeAiDiv.innerHTML = marked.parse(aiReply);
-                addInteractiveElements(activeAiDiv, aiReply);
-                
-                chatMemoryContext.push({role: "user", content: val || "Image scanned"}, {role: "assistant", content: aiReply});
-
-                fetch(GAS_URL, { 
-                    method: "POST", 
-                    body: JSON.stringify({ action: "saveChat", email: currentUserEmail || "Guest", userMessage: val || "[Image]", aiReply: aiReply }) 
-                }).catch(e => {});
             }
-
-        } catch (e) { 
-            const loaderEl = document.getElementById(loaderId);
-            if(loaderEl) loaderEl.remove();
-            renderHTML('ai', "⚠️ Connection error. Please check your internet and try again.", false); 
+        } catch(e) {
+            if (e.name === 'AbortError') {
+                aiReply += "<br><br><i style='color:#d93025;'>[⏹ Generation Stopped by User]</i>";
+            } else {
+                const el = document.getElementById(loaderId);
+                if(el) { el.remove(); renderMsg('ai', "⚠️ Connection Error. Please try again."); }
+            }
         } finally {
             input.disabled = false; sendBtn.disabled = false; input.focus();
-            document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
-        }
-    }
-
-    function renderHTML(role, text, isTyping = false, imageUrl = null) {
-        const box = document.getElementById("chatBox");
-        const div = document.createElement("div");
-        div.className = `msg ${role === 'user' ? 'msg-user' : 'msg-ai'}`;
-        
-        let contentHtml = marked.parse(text);
-        
-        if(imageUrl && role === 'user') {
-            contentHtml += `<br><img src="${imageUrl}" style="max-width: 200px; border-radius: 8px; margin-top: 8px; display: block; border: 1px solid #ddd;">`;
-        }
-        
-        if (role === 'user') {
-            contentHtml += `
-            <div class="copy-prompt-container">
-                <button class="action-btn" onclick="copyToClipboard(this.parentElement.parentElement.innerText.replace('Copy Prompt', '').trim(), this, '<svg width=\\'12\\' height=\\'12\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'2\\'><rect x=\\'9\\' y=\\'9\\' width=\\'13\\' height=\\'13\\' rx=\\'2\\' ry=\\'2\\'></rect><path d=\\'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\\'></path></svg> Copy Prompt')">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Prompt
-                </button>
-            </div>`;
-        }
-        
-        div.innerHTML = contentHtml;
-        if (role === 'ai') addInteractiveElements(div, text); 
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
-    }
-
-    function addInteractiveElements(div, fullAiText) {
-        const actionsDiv = document.createElement("div");
-        actionsDiv.className = "msg-actions";
-        
-        const speakBtn = document.createElement("button");
-        speakBtn.className = "action-btn";
-        speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
-        
-        let isSpeaking = false;
-        speakBtn.onclick = () => {
-            if (isSpeaking) {
-                window.speechSynthesis.cancel();
-                isSpeaking = false;
-                speakBtn.classList.remove("active-stop");
-                speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
-            } else {
-                window.speechSynthesis.cancel(); 
-                let cleanText = div.cloneNode(true);
-                cleanText.querySelectorAll('pre, .msg-actions, .copy-prompt-container').forEach(el => el.remove());
-                let finalAudioText = cleanText.innerText.replace(/[*#_`~]/g, "").trim();
-                
-                if (finalAudioText) {
-                    const utt = new SpeechSynthesisUtterance(finalAudioText);
-                    utt.voice = /[\u0900-\u097F]/.test(finalAudioText) ? hinVoice : engVoice;
-                    
-                    utt.onend = () => {
-                        isSpeaking = false;
-                        speakBtn.classList.remove("active-stop");
-                        speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
-                    };
-                    
-                    window.speechSynthesis.speak(utt);
-                    isSpeaking = true;
-                    speakBtn.classList.add("active-stop");
-                    speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Stop`;
-                }
+            stopBtn.style.display = 'none';
+            edgeLight.classList.remove('active'); // Ensure light is off
+            abortController = null;
+            
+            // Finalize
+            if(aiDiv) {
+                document.getElementById(loaderId)?.remove();
+                aiDiv.innerHTML = marked.parse(aiReply);
+                addActions(aiDiv, aiReply, val, savedImg);
+                chatMemory.push({role:"user", content: val || "Image scanned"}, {role:"assistant", content: aiReply});
             }
-        };
-
-        const copyBtn = document.createElement("button");
-        copyBtn.className = "action-btn";
-        const originalCopyHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Answer`;
-        copyBtn.innerHTML = originalCopyHtml;
-        
-        copyBtn.onclick = () => {
-            let pureText = fullAiText || div.innerText;
-            copyToClipboard(pureText, copyBtn, originalCopyHtml);
-        };
-
-        actionsDiv.appendChild(speakBtn);
-        actionsDiv.appendChild(copyBtn);
-        div.appendChild(actionsDiv);
-
-        div.querySelectorAll('pre').forEach(p => {
-            const codeBlock = p.querySelector('code');
-            const cp = document.createElement('button'); 
-            cp.className = 'copy-code-btn'; cp.innerText = 'Copy';
-            
-            cp.onclick = function() { 
-                const text = codeBlock.innerText || codeBlock.textContent;
-                copyToClipboard(text, cp, 'Copy');
-            };
-            
-            p.appendChild(cp);
-            hljs.highlightElement(codeBlock);
-        });
-        
-        renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}] });
+        }
     }
+
+    function renderMsg(role, text, img) {
+        const div = document.createElement("div"); 
+        div.className = `msg msg-${role} ${role === 'ai' ? 'glass-heavy' : 'glass'}`;
+        
+        let html = marked.parse(text || "");
+        if (img) html += `<br><img src="${img}" style="max-width:240px; border-radius:14px; margin-top:10px; display:block; border:1px solid rgba(255,255,255,0.6); box-shadow:0 6px 20px rgba(0,0,0,0.1);">`;
+        
+        // COPY PROMPT Logic completely restored
+        if (role === 'user') {
+            const prmptHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Prompt`;
+            html += `<div class="copy-prompt-container"><button class="action-btn" onclick="copyToClipboard(\`${(text||"").replace(/`/g, '\\`')}\`, this, \`${prmptHtml}\`)">${prmptHtml}</button></div>`;
+        }
+        
+        div.innerHTML = html;
+        if(role==='ai') addActions(div, text, null, null);
+        document.getElementById('chatBox').appendChild(div);
+        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+    }
+
+    function addActions(div, aiText, userText, sentImgBase64) {
+        const actions = document.createElement("div"); actions.className = "msg-actions";
+        if(aiText) {
+            // Read Aloud
+            const speakBtn = document.createElement("button"); speakBtn.className = "action-btn";
+            speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
+            let isPlaying = false;
+            speakBtn.onclick = () => {
+                if(isPlaying) { window.speechSynthesis.cancel(); isPlaying=false; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`; speakBtn.classList.remove('stop-active'); }
+                else {
+                    window.speechSynthesis.cancel();
+                    const cleanText = aiText.replace(/[*#_`~]/g, "").replace(/\[⏹ Generation Stopped by User\]/g, "");
+                    const utt = new SpeechSynthesisUtterance(cleanText);
+                    utt.voice = /[\u0900-\u097F]/.test(cleanText) ? hinVoice : engVoice;
+                    utt.onend = () => { isPlaying=false; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`; speakBtn.classList.remove('stop-active'); };
+                    window.speechSynthesis.speak(utt);
+                    isPlaying=true; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Stop Audio`; speakBtn.classList.add('stop-active');
+                }
+            };
+            actions.appendChild(speakBtn);
+
+            // Copy Answer
+            const cpBtn = document.createElement("button"); cpBtn.className = "action-btn";
+            const originalHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Answer`;
+            cpBtn.innerHTML = originalHtml;
+            cpBtn.onclick = () => copyToClipboard(aiText.replace(/\[⏹ Generation Stopped by User\]/g, ""), cpBtn, originalHtml);
+            actions.appendChild(cpBtn);
+
+            // Retry Button
+            if(userText !== null) {
+                const retryBtn = document.createElement("button"); retryBtn.className = "action-btn";
+                retryBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path></svg> Retry`;
+                retryBtn.onclick = () => retryChat(userText, sentImgBase64, div);
+                actions.appendChild(retryBtn);
+            }
+        }
+        div.appendChild(actions);
+        
+        // Highlight Code
+        div.querySelectorAll('pre code').forEach(b => { 
+            hljs.highlightElement(b); 
+            const cBtn = document.createElement('button'); cBtn.className='copy-code-btn'; cBtn.innerText='Copy Code';
+            cBtn.onclick = () => copyToClipboard(b.innerText, cBtn, 'Copy Code');
+            b.parentNode.appendChild(cBtn);
+        });
+        renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+    }
+
+    // Login logic
+    function showChatScreen() { document.getElementById('login-section').style.display='none'; document.getElementById('chat-section').style.display='flex'; }
+    function showLoginScreen() { document.getElementById('chat-section').style.display='none'; document.getElementById('login-section').style.display='flex'; }
+    function switchAuth(m) { isRegisterMode=(m==='register'); document.getElementById('nameInput').style.display=isRegisterMode?'block':'none'; }
+    function logout() { localStorage.clear(); location.reload(); }
 </script>
 </body>
 </html>
+
+
