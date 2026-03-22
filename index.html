@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Next Gen AI | Edge Light</title>
+    <meta name="theme-color" content="#ffffff">
+    <title>Next Gen AI | Liquid Cloud</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -16,7 +19,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
-        /* 🌈 BREATHING BACKGROUND */
+        /* 🌈 FASTER BREATHING BACKGROUND */
         @keyframes breatheColors {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -26,249 +29,336 @@
         body { 
             background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #fccb90, #d57eeb);
             background-size: 300% 300%;
-            animation: breatheColors 18s ease-in-out infinite;
+            animation: breatheColors 10s ease-in-out infinite; 
             color: #111; 
             height: 100vh; 
             height: 100dvh; 
             display: flex; 
-            flex-direction: column; 
             overflow: hidden; 
         }
 
-        /* ✨ SAMSUNG / GOOGLE STYLE EDGE LIGHTING */
+        /* ✨ EDGE LIGHTING */
         #edge-lighting {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none; z-index: 9999; opacity: 0;
+            transition: opacity 0.4s ease;
             box-shadow: inset 0 0 25px 8px rgba(255, 0, 255, 0.7), inset 0 0 50px 15px rgba(0, 255, 255, 0.7);
             animation: edgeGlow 2s linear infinite;
         }
-        #edge-lighting.active {
-            opacity: 1;
-        }
-        @keyframes edgeGlow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
+        #edge-lighting.active { opacity: 1; }
+        @keyframes edgeGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
         
-        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes blink { 50% { opacity: 0; } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        
         .typing-cursor { display: inline-block; width: 6px; height: 15px; background-color: #000; margin-left: 4px; animation: blink 0.7s infinite; vertical-align: middle; }
 
-        /* 💎 TRUE LIQUID CRYSTAL (GLASSMORPHISM) */
-        .glass {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+        /* 💎 GLASSMORPHISM */
+        .glass { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05); }
+        .glass-heavy { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); }
+
+        /* 💧 LIQUID BUTTON EFFECT */
+        .btn-liquid {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
         }
-        .glass-heavy {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        .btn-liquid:active { transform: scale(0.95); }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-anim 500ms linear;
+            background-color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
         }
+        .btn-dark .ripple { background-color: rgba(255, 255, 255, 0.3); }
+        .btn-light .ripple { background-color: rgba(0, 0, 0, 0.1); }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 
-        /* --- 🔐 LOGIN/REGISTER --- */
-        #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; height: 100%; text-align: center; max-width: 400px; margin: 0 auto; width: 100%; z-index: 20;}
-        .login-box { padding: 40px 30px; border-radius: 24px; width: 100%; }
-        .login-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
-        .auth-tabs { display: flex; width: 100%; margin-bottom: 20px; background: rgba(255,255,255,0.5); border-radius: 12px; padding: 5px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #555; cursor: pointer; border-radius: 8px; font-weight: 600; transition: 0.3s;}
-        .tab-btn.active { background: #fff; color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .auth-input { width: 100%; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.8); padding: 14px 16px; border-radius: 12px; margin-bottom: 12px; outline: none; font-size: 1rem; transition: 0.3s;}
-        .auth-input:focus { background: #fff; box-shadow: 0 0 0 2px rgba(0,0,0,0.1); }
-        .auth-btn { width: 100%; background: #000; border: none; padding: 14px; border-radius: 12px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;}
-        .auth-btn:hover { background: #333; transform: translateY(-2px); }
-
-        /* --- 💬 HEADER --- */
-        #chat-section { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 900px; margin: 0 auto; position: relative; }
-        #header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.4);}
-        .header-left { display: flex; align-items: center; gap: 10px; }
-        .chat-header-logo { width: 38px; height: 38px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.8);}
+        /* --- 🔐 LOGIN/REGISTER MODAL --- */
+        #login-section { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; height: 100%; width: 100%; position: absolute; top:0; left:0; z-index: 2000; background: rgba(255,255,255,0.3); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);}
+        .login-box { padding: 40px 30px; border-radius: 28px; width: 100%; max-width: 420px; text-align: center; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative;}
         
-        .model-selector-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8); padding: 8px 14px; border-radius: 14px; cursor: pointer; font-weight: 700; color: #222; font-size: 0.95rem; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
-        .model-selector-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-1px);}
+        .close-modal-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.05); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; color: #333;}
+        .close-modal-btn:hover { background: rgba(0,0,0,0.1); transform: scale(1.1);}
+
+        .login-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;}
+        .auth-tabs { display: flex; width: 100%; margin-bottom: 20px; background: rgba(255,255,255,0.6); border-radius: 14px; padding: 6px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #555; cursor: pointer; border-radius: 10px; font-weight: 700; transition: 0.3s;}
+        .tab-btn.active { background: #fff; color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .auth-input { width: 100%; background: rgba(255,255,255,0.8); border: 2px solid transparent; padding: 16px; border-radius: 14px; margin-bottom: 12px; outline: none; font-size: 1rem; font-weight: 500; transition: 0.3s;}
+        .auth-input:focus { background: #fff; border-color: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .auth-btn { width: 100%; background: #000; border: none; padding: 16px; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: 0.3s;}
+        .loader-spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- 📑 SIDEBAR (Collapsible) --- */
+        #sidebar { width: 280px; height: 100%; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,0.4); z-index: 100; transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s ease; position: relative;}
         
-        .papa-popup { position: absolute; top: 65px; left: 20px; border-radius: 18px; display: none; z-index: 100; min-width: 200px; max-height: 65vh; overflow-y: auto; padding: 8px;}
-        .model-option { padding: 12px 16px; cursor: pointer; border-radius: 12px; margin-bottom: 4px; display: flex; align-items: center; transition: 0.2s;}
-        .model-option:hover { background: rgba(255,255,255,0.8); }
-        .model-option.selected { border-left: 4px solid #000; background: rgba(255,255,255,0.95); }
-        .model-title { font-weight: 700; font-size: 1rem; color: #000; }
-
-        .header-actions { display: flex; gap: 8px; align-items: center; }
-        .btn-outline { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); color: #333; border-radius: 12px; padding: 8px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
-        .btn-outline:hover { background: rgba(255,255,255,0.95); box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
-
-        /* --- 💬 CHAT BOX --- */
-        #chatBox { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
-        .msg { max-width: 85%; padding: 16px 22px; line-height: 1.6; border-radius: 22px; font-size: 1rem; animation: fadeInSlideUp 0.4s ease-out forwards; position: relative; }
+        #sidebar.collapsed { width: 0 !important; min-width: 0 !important; border-right: none; overflow: hidden;}
+        #sidebar.collapsed > * { opacity: 0; pointer-events: none; transition: opacity 0.2s;}
         
-        .msg-user { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.6); align-self: flex-end; border-bottom-right-radius: 6px; color: #000; backdrop-filter: blur(20px); box-shadow: 0 4px 20px rgba(0,0,0,0.04);}
-        .msg-ai { background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255,255,255,0.9); align-self: flex-start; border-bottom-left-radius: 6px; width: 100%; backdrop-filter: blur(25px); box-shadow: 0 6px 25px rgba(0,0,0,0.06);}
-
-        .msg-ai pre { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); padding: 36px 16px 16px; border-radius: 14px; overflow-x: auto; margin: 16px 0; box-shadow: inset 0 2px 10px rgba(0,0,0,0.03); }
-        .copy-code-btn { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #ddd; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; z-index: 5; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
-
-        /* Interactive Actions */
-        .msg-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-        .action-btn { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); color: #444; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);}
-        .action-btn:hover { background: #fff; color: #000; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08);}
-        .stop-active { color: #d93025 !important; background: rgba(217, 48, 37, 0.1) !important; border-color: rgba(217, 48, 37, 0.3) !important;}
+        .sidebar-header { padding: 20px 15px; border-bottom: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: space-between; align-items: center; min-width: 280px;}
+        .new-chat-btn { width: 100%; background: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center; box-shadow: 0 6px 15px rgba(0,0,0,0.08);}
+        .chat-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; min-width: 280px;}
         
-        .copy-prompt-container { display: flex; justify-content: flex-end; margin-top: 10px; }
+        .chat-list::-webkit-scrollbar { width: 5px; }
+        .chat-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 5px; }
+        
+        .chat-item { padding: 14px 16px; border-radius: 12px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: 0.2s; border: 1px solid transparent;}
+        .chat-item:hover { background: rgba(255,255,255,0.6); transform: translateX(4px); }
+        .chat-item.active { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,1); color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+        .sidebar-footer { padding: 15px; border-top: 1px solid rgba(255,255,255,0.3); min-width: 280px;}
 
-        /* 🌀 LOGO LOADER */
-        @keyframes pulseLogo {
-            0% { transform: scale(0.95); opacity: 0.7; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 25px rgba(255,255,255,1)); }
-            100% { transform: scale(0.95); opacity: 0.7; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
-        }
-        .logo-loader-container { display: flex; align-items: center; gap: 15px; padding: 12px; border-radius: 20px;}
-        .logo-loader-img { width: 48px; height: 48px; border-radius: 14px; animation: pulseLogo 1.8s infinite ease-in-out; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
-        .logo-loader-text { font-weight: 700; color: #444; font-size: 1.05rem; animation: blink 1.5s infinite; }
+        /* --- 💬 MAIN CHAT AREA --- */
+        #main-area { flex: 1; display: flex; flex-direction: column; height: 100%; position: relative; width: 100%; transition: 0.3s;}
+        #header { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.4);}
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        
+        .menu-btn { display: block; background: rgba(255,255,255,0.6); border: none; padding: 10px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.2s;}
+        .menu-btn:hover { background: rgba(255,255,255,0.9); }
+        
+        .chat-header-logo { width: 38px; height: 38px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #fff;}
+        
+        .model-selector-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.7); border: none; padding: 10px 16px; border-radius: 14px; cursor: pointer; font-weight: 700; color: #111; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+        
+        .papa-popup { position: absolute; top: 70px; left: 65px; border-radius: 20px; display: none; z-index: 100; min-width: 280px; max-height: 65vh; overflow-y: auto; padding: 10px; animation: popIn 0.2s ease-out; box-shadow: 0 15px 40px rgba(0,0,0,0.15);}
+        .model-option { padding: 14px 18px; cursor: pointer; border-radius: 14px; margin-bottom: 6px; display: flex; flex-direction: column; transition: 0.2s;}
+        .model-option:hover { background: rgba(255,255,255,0.8); transform: scale(1.02); }
+        .model-option.selected { border-left: 5px solid #000; background: rgba(255,255,255,1); box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+        .model-title { font-weight: 800; font-size: 1.05rem; color: #000; }
+        .model-desc { font-size: 0.8rem; color: #555; margin-top: 4px; font-weight: 600;}
 
-        /* ⏹️ STOP GENERATION BUTTON */
+        #chatBox { flex: 1; padding: 20px 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 18px 24px; line-height: 1.6; border-radius: 24px; font-size: 1.05rem; font-weight: 500; animation: fadeInSlideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; position: relative; word-wrap: break-word;}
+        .msg-user { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255,255,255,0.7); align-self: flex-end; border-bottom-right-radius: 8px; color: #000; box-shadow: 0 4px 20px rgba(0,0,0,0.05);}
+        .msg-ai { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255,255,255,1); align-self: flex-start; border-bottom-left-radius: 8px; width: 100%; box-shadow: 0 8px 30px rgba(0,0,0,0.08); color: #111;}
+        
+        .msg-ai * { color: inherit; } 
+
+        .msg-ai pre { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,1); padding: 40px 16px 16px; border-radius: 16px; overflow-x: auto; margin: 16px 0; max-width: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);}
+        .copy-code-btn { position: absolute; top: 10px; right: 10px; background: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: 0.2s;}
+
+        .msg-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .action-btn { background: rgba(255,255,255,0.8); border: none; color: #444; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; transition: 0.3s; padding: 10px 16px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .stop-active { color: #d93025 !important; background: rgba(217, 48, 37, 0.1) !important;}
+
+        @keyframes pulseLogo { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); } 100% { transform: scale(0.95); opacity: 0.8; } }
+        .logo-loader-container { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 20px;}
+        .logo-loader-img { width: 50px; height: 50px; border-radius: 16px; animation: pulseLogo 1.5s infinite ease-in-out; object-fit: cover; border: 2px solid #fff;}
+        .logo-loader-text { font-weight: 800; color: #333; font-size: 1.1rem; animation: blink 1.2s infinite; }
+
         .stop-gen-wrapper { position: absolute; bottom: 100px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none;}
-        .stop-gen-btn { pointer-events: auto; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,1); padding: 12px 24px; border-radius: 30px; font-weight: 700; color: #d93025; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.15); backdrop-filter: blur(15px); transition: 0.3s; animation: fadeInSlideUp 0.3s ease-out;}
-        .stop-gen-btn:hover { background: #fff; transform: scale(1.05); }
+        .stop-gen-btn { pointer-events: auto; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.9); border: none; padding: 12px 26px; border-radius: 30px; font-weight: 800; color: #d93025; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.15); backdrop-filter: blur(15px); transition: 0.3s;}
 
-        /* --- ✍️ FOOTER --- */
-        #input-area { padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); z-index: 10; border-top: 1px solid rgba(255,255,255,0.5);}
-        #image-preview-wrapper { display: none; position: relative; width: 65px; height: 65px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; margin-left: 10px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 2px solid #fff;}
-        .input-wrapper { display: flex; gap: 12px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); padding: 10px 14px; border-radius: 30px; align-items: center; transition: 0.3s; backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(0,0,0,0.08);}
-        .input-wrapper:focus-within { background: rgba(255,255,255,0.95); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
-        #chatInput { flex: 1; border: none; outline: none; font-size: 1.05rem; color: #000; background: transparent; font-weight: 500;}
-        #chatInput::placeholder { color: #888; }
-        
-        #sendBtn { background: #000; border: none; width: 42px; height: 42px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);}
-        #sendBtn:hover { transform: scale(1.08); background: #222; box-shadow: 0 6px 16px rgba(0,0,0,0.3);}
-        #sendBtn:disabled { background: rgba(0,0,0,0.3); cursor: not-allowed; transform: none; box-shadow: none;}
+        #input-area { padding: 15px 25px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,0.4); width: 100%;}
+        .input-wrapper { display: flex; gap: 12px; background: rgba(255,255,255,0.8); border: 2px solid rgba(255,255,255,1); padding: 8px 16px; border-radius: 35px; align-items: center; transition: 0.3s; box-shadow: 0 8px 25px rgba(0,0,0,0.06);}
+        .input-wrapper:focus-within { box-shadow: 0 12px 35px rgba(0,0,0,0.1); transform: translateY(-2px);}
+        #chatInput { flex: 1; border: none; outline: none; font-size: 1.1rem; color: #000; background: transparent; font-weight: 600; min-width: 0; padding-left: 8px;}
+        #sendBtn { background: #000; border: none; width: 46px; height: 46px; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.3s;}
 
         @media (max-width: 768px) { 
-            .msg { max-width: 95%; padding: 14px 18px;} 
-            .hide-mobile { display: none; } 
-            .input-wrapper { padding: 8px 12px; }
-            .papa-popup { left: 10px; right: 10px; min-width: unset; }
-            #header { padding: 10px 15px; }
+            #sidebar { position: absolute; left: -100%; top: 0; box-shadow: 5px 0 30px rgba(0,0,0,0.15); width: 280px !important; }
+            #sidebar.collapsed { width: 280px !important; }
+            #sidebar.open { left: 0; }
+            .msg { max-width: 95%; padding: 16px 20px; font-size: 1rem;} 
+            #input-area { padding: 12px 15px; }
+            .papa-popup { left: 15px; right: 15px; min-width: unset; width: auto;}
+            .stop-gen-wrapper { bottom: 85px; }
+            .login-box { padding: 30px 20px; border-radius: 24px;}
         }
+        .overlay { display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4); z-index: 90; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease;}
+        .overlay.active { display: block; opacity: 1; }
     </style>
 </head>
 <body>
 
-<!-- ✨ EDGE LIGHTING CONTAINER ✨ -->
 <div id="edge-lighting"></div>
+<div class="overlay" id="mobile-overlay" onclick="toggleSidebar()"></div>
 
-<div id="login-section" class="glass">
+<!-- 🔐 AUTH SECTION (Smooth Modal with Close Button) -->
+<div id="login-section">
     <div class="login-box glass-heavy">
+        <button id="closeLoginBtn" class="close-modal-btn" onclick="closeLoginModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
         <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="login-logo" alt="Logo">
-        <h1 style="font-weight: 800;">Next Gen AI</h1>
-        <p style="color:#666; margin-bottom:20px; font-weight:600;">Developed in India by Divy</p>
+        <h1 style="font-weight: 800; font-size: 1.8rem; margin-bottom: 5px;">Next Gen AI</h1>
+        <p style="color:#555; margin-bottom:20px; font-weight:600; font-size: 0.9rem;" id="login-subtitle">Developed in India by Divy</p>
         <div class="auth-tabs">
-            <button class="tab-btn active" id="tab-login" onclick="switchAuth('login')">Log in</button>
-            <button class="tab-btn" id="tab-register" onclick="switchAuth('register')">Sign up</button>
+            <button class="tab-btn active btn-liquid btn-light" id="tab-login" onclick="switchAuth('login')">Log in</button>
+            <button class="tab-btn btn-liquid btn-light" id="tab-register" onclick="switchAuth('register')">Sign up</button>
         </div>
         <div id="email-box">
-            <input type="text" id="nameInput" class="auth-input" placeholder="Your full name" style="display: none;">
+            <input type="text" id="nameInput" class="auth-input" placeholder="Aapka poora naam" style="display: none;">
             <input type="email" id="emailInput" class="auth-input" placeholder="Email address">
-            <button class="auth-btn" onclick="sendOTP()" id="otpBtn">Continue</button>
-            <button class="action-btn" style="width:100%; justify-content:center; margin-top:12px; background: transparent; border:none; box-shadow:none;" onclick="showChatScreen()">Skip for now</button>
+            <button class="auth-btn btn-liquid btn-dark" onclick="requestOTP()" id="otpBtn">Continue</button>
         </div>
         <div id="otp-box" style="display: none;">
+            <p style="font-size: 0.85rem; color:#555; margin-bottom:12px; font-weight: 600;">Email par bheja gaya 6-digit OTP daalein.</p>
             <input type="text" id="otpInput" class="auth-input" placeholder="Enter 6-digit OTP">
-            <button class="auth-btn" onclick="verifyOTP()" id="verifyBtn">Verify & Enter</button>
+            <button class="auth-btn btn-liquid btn-dark" onclick="submitOTP()" id="verifyBtn">Verify & Enter</button>
         </div>
-        <div id="login-status" style="color:#d93025; margin-top:15px; font-size:0.9rem; font-weight:700;"></div>
+        <div id="login-status" style="color:#d93025; margin-top:15px; font-size:0.95rem; font-weight:700;"></div>
     </div>
 </div>
 
-<div id="chat-section">
+<!-- 📑 SIDEBAR -->
+<aside id="sidebar" class="glass-heavy">
+    <div class="sidebar-header">
+        <button class="new-chat-btn btn-liquid btn-light" onclick="startNewChat()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Naya Chat
+        </button>
+    </div>
+    <div class="chat-list" id="chat-list-container">
+        <div style="text-align:center; padding:20px; color:#666; font-size:0.9rem; font-weight: 600;" id="chat-loading">Loading chats...</div>
+    </div>
+    <div class="sidebar-footer">
+        <div style="display:flex; align-items:center; gap:12px; font-weight:700; font-size:0.95rem; width: 100%; margin-bottom: 10px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:#000; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem; font-weight:800; box-shadow:0 4px 10px rgba(0,0,0,0.2);" id="user-initial">G</div>
+            <span id="display-user-name" style="flex:1; overflow:hidden; text-overflow:ellipsis;">Guest User</span>
+            <button onclick="logout()" id="logoutBtn" class="btn-liquid btn-light" style="display:none; background:#fff; border:none; color:#d93025; cursor:pointer; padding:8px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.05);" title="Logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+        </div>
+        <!-- 🎁 Guest Login Button -->
+        <button id="guestLoginBtn" class="btn-liquid btn-dark" style="display:none; width:100%; padding:12px; border-radius:12px; background:#111; color:#fff; border:none; cursor:pointer; font-weight:700;" onclick="showLoginModal('Chats save karne aur unlimited baat karne ke liye Log in karein!', false)">
+            Log in / Sign up
+        </button>
+    </div>
+</aside>
+
+<!-- 💬 MAIN CHAT AREA -->
+<main id="main-area">
     <header id="header" class="glass">
         <div class="header-left">
+            <button class="menu-btn btn-liquid btn-light" onclick="toggleSidebar()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
             <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="chat-header-logo">
-            <button class="model-selector-btn" onclick="togglePopup()">
+            <button class="model-selector-btn btn-liquid btn-light" onclick="togglePopup()">
                 <span id="current-model-label">Next Gen 2.0</span> 
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg>
             </button>
             
-            <!-- 🤖 CLEAN MODEL SELECTOR (Even Numbers) -->
             <div id="papa-popup" class="papa-popup glass-heavy">
-                <div class="model-option selected" onclick="selectModel(0, 'Next Gen 2.0')">
-                    <span class="model-title">Next Gen 2.0</span>
+                <div class="model-option selected" onclick="selectModel(2, 'Next Gen 2.0')">
+                    <span class="model-title">Next Gen 2.0</span><span class="model-desc">Sabse halka aur tez</span>
                 </div>
                 <div class="model-option" onclick="selectModel(1, 'Next Gen 4.0')">
-                    <span class="model-title">Next Gen 4.0</span>
+                    <span class="model-title">Next Gen 4.0</span><span class="model-desc">Chhota aur kushal</span>
                 </div>
-                <div class="model-option" onclick="selectModel(2, 'Next Gen 6.0')">
-                    <span class="model-title">Next Gen 6.0</span>
+                <div class="model-option" onclick="selectModel(0, 'Next Gen 6.0')">
+                    <span class="model-title">Next Gen 6.0</span><span class="model-desc">Madhyam kshamata</span>
                 </div>
                 <div class="model-option" onclick="selectModel(3, 'Next Gen 8.0')">
-                    <span class="model-title">Next Gen 8.0</span>
+                    <span class="model-title">Next Gen 8.0</span><span class="model-desc">Fast processing</span>
                 </div>
                 <div class="model-option" onclick="selectModel(4, 'Next Gen 10.0')">
-                    <span class="model-title">Next Gen 10.0</span>
+                    <span class="model-title">Next Gen 10.0</span><span class="model-desc">Advanced logic</span>
                 </div>
                 <div class="model-option" onclick="selectModel(5, 'Next Gen 12.0')">
-                    <span class="model-title">Next Gen 12.0</span>
+                    <span class="model-title">Next Gen 12.0</span><span class="model-desc">High-end power</span>
                 </div>
                 <div class="model-option" onclick="selectModel(6, 'Next Gen 14.0')">
-                    <span class="model-title">Next Gen 14.0</span>
+                    <span class="model-title">Next Gen 14.0</span><span class="model-desc">Sabse shaktishali Mahabali</span>
                 </div>
             </div>
         </div>
-        <div class="header-actions">
-            <button class="btn-outline" id="new-chat-btn" onclick="location.reload()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg> <span class="hide-mobile">New Chat</span>
-            </button>
-            <button class="btn-outline" id="header-signin-btn" style="display:none;" onclick="showLoginScreen()">Sign in</button>
-            <button class="btn-outline" id="logout-btn" style="display:none;" onclick="logout()">Logout</button>
-        </div>
     </header>
 
-    <main id="chatBox"></main>
+    <div id="chatBox"></div>
 
-    <!-- ⏹️ STOP BUTTON (Visible during generation) -->
     <div class="stop-gen-wrapper">
-        <button id="stopGenBtn" class="stop-gen-btn" style="display: none;" onclick="stopGeneration()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="12" height="12"></rect></svg> Stop Generating
+        <button id="stopGenBtn" class="stop-gen-btn btn-liquid btn-light" style="display: none;" onclick="stopGeneration()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="12" height="12"></rect></svg> Stop Generating
         </button>
     </div>
 
     <footer id="input-area" class="glass">
-        <div id="image-preview-wrapper">
-            <img id="image-preview" src="" style="width:100%; height:100%; object-fit:cover;">
-            <button onclick="clearImg()" style="position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px;">✕</button>
-        </div>
         <div class="input-wrapper">
-            <button onclick="document.getElementById('fileInput').click()" style="background:none; border:none; color:#555; font-size:1.4rem; cursor:pointer; padding:5px; transition:0.2s;" title="Upload Image">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            </button>
-            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImg(event)">
-            
             <input type="text" id="chatInput" placeholder="Message Next Gen AI..." autocomplete="off" onkeypress="if(event.key==='Enter') sendChat()">
-            
-            <button id="sendBtn" onclick="sendChat()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <button id="sendBtn" class="btn-liquid btn-dark" onclick="sendChat()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
         </div>
     </footer>
-</div>
+</main>
 
 <script>
+    // 🌐 APIs
     const WORKER_URL = "https://rapid-cake-a47a.katiyarsheelu07.workers.dev/";
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwHznkQVxAx6yk8TgI5R8RQDUgcEuBpxYamU-O1EvO5HMIrLXnC7xqWnRxGkSDRctVz/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzs7uQh4Q-WYwAZ79NTGa45fyV5mrZZoAB-9dK-nR2vMcGj9AL7BaBsrLyp797WPxVK-A/exec";
 
-    let chatMemory = [], selectedModelIndex = 0, currentBase64 = null;
-    let userEmail = localStorage.getItem("nextgen_user_email");
-    let engVoice = null, hinVoice = null;
+    // 🚀 MASTER FETCH FUNCTION (CORS BYPASS)
+    async function gasFetch(payload) {
+        try {
+            const res = await fetch(GAS_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+            return await res.json();
+        } catch (e) {
+            console.error("Backend Error:", e);
+            throw new Error("Network Error");
+        }
+    }
+
+    // 🧠 SYSTEM STATE
+    let chatMemory = [];
+    let selectedModelIndex = 2;
+    let currentChatId = null;   
+    let currentChatTitle = null;
     let abortController = null; 
 
-    // 🎙️ PREMIUM BROWSER VOICE
+    // 👤 USER STATE & GUEST SESSION
+    let userEmail = localStorage.getItem("nextgen_email");
+    let userName = localStorage.getItem("nextgen_name");
+    let isRegisterMode = false;
+    let guestMessageCount = parseInt(localStorage.getItem("nextgen_guest_count") || "0");
+    const MAX_GUEST_MESSAGES = 3;
+
+    // 🛡️ STRICT SYSTEM PROMPT (FIX FOR LANGUAGE HALLUCINATION)
+    const AI_SYSTEM_PROMPT = { 
+        role: "system", 
+        content: "You are 'Next Gen AI', a highly advanced assistant created by Divy. You MUST STRICTLY reply ONLY in pure, clear, and grammatically correct Hindi (Devanagari script). DO NOT use any other language like English, French, Spanish, Turkish, or gibberish under any circumstances." 
+    };
+
+    // 💧 LIQUID EFFECT LOGIC
+    function createRipple(event) {
+        const button = event.currentTarget;
+        const circle = document.createElement("span");
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+        
+        const rect = button.getBoundingClientRect();
+        const clientX = event.clientX || (event.touches ? event.touches[0].clientX : rect.left + radius);
+        const clientY = event.clientY || (event.touches ? event.touches[0].clientY : rect.top + radius);
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${clientX - rect.left - radius}px`;
+        circle.style.top = `${clientY - rect.top - radius}px`;
+        circle.classList.add("ripple");
+
+        const existingRipple = button.querySelector(".ripple");
+        if (existingRipple) { existingRipple.remove(); }
+        button.appendChild(circle);
+    }
+
+    function attachLiquidEffects() {
+        const buttons = document.querySelectorAll('.btn-liquid');
+        buttons.forEach(btn => {
+            btn.addEventListener('mousedown', createRipple);
+            btn.addEventListener('touchstart', createRipple, {passive: true});
+        });
+    }
+
+    // 🎙️ TTS VOICES
+    let engVoice = null, hinVoice = null;
     function loadVoices() {
         const v = window.speechSynthesis.getVoices();
         engVoice = v.find(x => x.name.includes("Google UK English")) || v.find(x => x.lang.startsWith("en"));
@@ -276,120 +366,255 @@
     }
     window.speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
 
+    // 🚀 INITIALIZATION
     window.onload = () => {
-        showChatScreen();
+        attachLiquidEffects();
+        
         if(userEmail) {
-            document.getElementById('header-signin-btn').style.display='none';
-            document.getElementById('logout-btn').style.display='flex';
-            fetchHistory();
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('display-user-name').innerText = userName || "User";
+            document.getElementById('user-initial').innerText = (userName || "U").charAt(0).toUpperCase();
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('guestLoginBtn').style.display = 'none';
+            fetchChatSidebarList(); 
+            startNewChat(); 
         } else {
-            document.getElementById('header-signin-btn').style.display='flex';
-            renderMsg('ai', "नमस्ते! मैं **Next Gen AI** हूँ। पटेल ट्रेडर्स के लिए भारत में विकसित। कृपया मॉडल चुनें और पूछें! 🇮🇳");
+            document.getElementById('display-user-name').innerText = "Guest User";
+            document.getElementById('user-initial').innerText = "G";
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('guestLoginBtn').style.display = 'block';
+            document.getElementById('chat-list-container').innerHTML = `<div style="text-align:center; padding:20px; color:#666; font-size:0.85rem; font-weight:600;">Guest Mode.<br>Login to save chats.</div>`;
+            
+            if(guestMessageCount >= MAX_GUEST_MESSAGES) {
+                showLoginModal("Aapke 3 free messages poore ho gaye hain. Aage baat karne ke liye kripya Log in ya Sign up karein! ❤️", true);
+            } else {
+                startNewChat();
+            }
         }
     };
 
-    function togglePopup() { const p = document.getElementById('papa-popup'); p.style.display = p.style.display==='block'?'none':'block'; }
-    function selectModel(idx, label) {
-        selectedModelIndex = idx;
-        document.getElementById('current-model-label').innerText = label;
-        document.querySelectorAll('.model-option').forEach(el => el.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        togglePopup();
-    }
-    document.addEventListener('click', (e) => {
-        const popup = document.getElementById('papa-popup');
-        const btn = document.querySelector('.model-selector-btn');
-        if (popup && popup.style.display==='block' && !popup.contains(e.target) && !btn.contains(e.target)) popup.style.display='none';
-    });
-
-    function handleImg(e) {
-        const file = e.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            currentBase64 = ev.target.result;
-            document.getElementById('image-preview').src = currentBase64;
-            document.getElementById('image-preview-wrapper').style.display = 'block';
-            document.getElementById('chatInput').focus();
-        };
-        reader.readAsDataURL(file);
-    }
-    function clearImg() { currentBase64 = null; document.getElementById('image-preview-wrapper').style.display = 'none'; document.getElementById('fileInput').value=""; }
-
-    function copyToClipboard(text, btn, originalHtml) {
-        const ta = document.createElement("textarea"); ta.value = text;
-        document.body.appendChild(ta); ta.select();
-        try { 
-            document.execCommand('copy'); 
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`; 
-            setTimeout(() => btn.innerHTML = originalHtml, 2000);
-        } catch (e) { btn.innerText = "Error"; }
-        document.body.removeChild(ta);
+    // -----------------------------------------
+    // 🔐 AUTHENTICATION & MODAL
+    // -----------------------------------------
+    function showLoginModal(message, isForced = false) {
+        const loginSec = document.getElementById('login-section');
+        loginSec.style.display = 'flex';
+        
+        if(message) {
+            document.getElementById('login-subtitle').innerText = message;
+            document.getElementById('login-subtitle').style.color = "#d93025";
+        }
+        document.getElementById('closeLoginBtn').style.display = isForced ? 'none' : 'flex';
     }
 
-    // 🛑 STOP GENERATION
-    function stopGeneration() {
-        if (abortController) {
-            abortController.abort();
-            document.getElementById('stopGenBtn').style.display = 'none';
-            document.getElementById('edge-lighting').classList.remove('active');
+    function closeLoginModal() {
+        document.getElementById('login-section').style.display = 'none';
+    }
+
+    function switchAuth(m) { 
+        isRegisterMode = (m === 'register'); 
+        document.getElementById('nameInput').style.display = isRegisterMode ? 'block' : 'none'; 
+        document.querySelectorAll('.auth-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`tab-${m}`).classList.add('active');
+        document.getElementById('login-status').innerText = "";
+    }
+
+    async function requestOTP() {
+        const email = document.getElementById('emailInput').value.trim();
+        const name = document.getElementById('nameInput').value.trim();
+        if(!email) return alert("Email daalein");
+        if(isRegisterMode && !name) return alert("Naam daalein");
+
+        const btn = document.getElementById('otpBtn');
+        btn.innerHTML = `<span class="loader-spinner"></span>`; btn.disabled = true;
+        document.getElementById('login-status').innerText = "Sending Secure OTP...";
+
+        try {
+            const data = await gasFetch({ action: isRegisterMode ? "register" : "sendOTP", email: email, name: name });
+            if(data.status === "success") {
+                document.getElementById('email-box').style.display = 'none';
+                document.getElementById('otp-box').style.display = 'block';
+                document.getElementById('login-status').style.color = "#0f9d58";
+                document.getElementById('login-status').innerText = "OTP aapke email par bhej diya gaya hai!";
+            } else {
+                document.getElementById('login-status').style.color = "#d93025";
+                document.getElementById('login-status').innerText = data.error;
+            }
+        } catch(e) {
+            document.getElementById('login-status').style.color = "#d93025";
+            document.getElementById('login-status').innerText = "Network Error. Kripya thodi der mein try karein.";
+        }
+        btn.innerHTML = "Continue"; btn.disabled = false;
+    }
+
+    async function submitOTP() {
+        const email = document.getElementById('emailInput').value.trim();
+        const otp = document.getElementById('otpInput').value.trim();
+        const name = document.getElementById('nameInput').value.trim();
+        if(!otp) return;
+
+        const btn = document.getElementById('verifyBtn');
+        btn.innerHTML = `<span class="loader-spinner"></span>`; btn.disabled = true;
+
+        try {
+            const data = await gasFetch({ action: isRegisterMode ? "verifyRegister" : "verifyOTP", email: email, otp: otp, name: name });
+            if(data.status === "success") {
+                localStorage.setItem("nextgen_email", email);
+                localStorage.setItem("nextgen_name", isRegisterMode ? name : "User"); 
+                localStorage.removeItem("nextgen_guest_count"); 
+                window.location.reload(); 
+            } else {
+                document.getElementById('login-status').style.color = "#d93025";
+                document.getElementById('login-status').innerText = data.error;
+            }
+        } catch(e) {
+            document.getElementById('login-status').style.color = "#d93025";
+            document.getElementById('login-status').innerText = "Verification failed. Network issue.";
+        }
+        btn.innerHTML = "Verify & Enter"; btn.disabled = false;
+    }
+
+    function logout() { localStorage.clear(); location.reload(); }
+
+    // -----------------------------------------
+    // 📑 CHAT SESSIONS & CLOUD SYNC
+    // -----------------------------------------
+    async function fetchChatSidebarList() {
+        if(!userEmail) return; 
+        try {
+            const data = await gasFetch({ action: "getChatList", email: userEmail });
+            const container = document.getElementById('chat-list-container');
+            container.innerHTML = "";
+            
+            if(data.chatList && data.chatList.length > 0) {
+                data.chatList.forEach(chat => {
+                    const div = document.createElement("div");
+                    div.className = "chat-item btn-liquid btn-light";
+                    div.innerText = chat.title;
+                    div.onclick = () => loadPastChat(chat.chatId, chat.title, div);
+                    div.addEventListener('mousedown', createRipple);
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#666; font-size:0.85rem; font-weight:600;">No past chats. Start a new one!</div>`;
+            }
+        } catch(e) {
+            document.getElementById('chat-list-container').innerHTML = `<div style="text-align:center; padding:20px; color:#d93025; font-size:0.85rem; font-weight:600;">Failed to load sync.</div>`;
         }
     }
 
-    // 🔄 RETRY GENERATION
-    function retryChat(userText, imgBase64, aiDivToRemove) {
-        if(aiDivToRemove) aiDivToRemove.remove();
-        if(chatMemory.length >= 2 && chatMemory[chatMemory.length-1].role === 'assistant') {
-            chatMemory.pop();
-            chatMemory.pop(); 
+    // 🚀 BLANK SCREEN FIX (Added chatTitle to payload)
+    async function loadPastChat(chatId, title, element) {
+        if(!userEmail) return;
+        document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+        if(element) element.classList.add('active');
+        
+        if(window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('mobile-overlay').classList.remove('active');
         }
-        document.getElementById('chatInput').value = userText;
-        if(imgBase64) {
-            currentBase64 = imgBase64;
-            document.getElementById('image-preview').src = currentBase64;
-            document.getElementById('image-preview-wrapper').style.display = 'block';
+
+        currentChatId = chatId;
+        currentChatTitle = title;
+        document.getElementById('chatBox').innerHTML = `<div style="text-align:center; margin-top:40px;"><span class="loader-spinner" style="border-top-color:#000;"></span><p style="font-size:0.95rem; font-weight:700; margin-top:12px;">Cloud se yaad la rahe hain...</p></div>`;
+        
+        try {
+            // FIX: Sending chatTitle along with chatId so backend can find the correct tab
+            const data = await gasFetch({ action: "getHistory", email: userEmail, chatId: chatId, chatTitle: chatId });
+            
+            document.getElementById('chatBox').innerHTML = ""; 
+            chatMemory = []; 
+            
+            if(data.status === "success" && data.history && data.history.length > 0) {
+                data.history.forEach(msg => {
+                    chatMemory.push(msg); 
+                    renderMsg(msg.role === 'user' ? 'user' : 'ai', msg.content, false); 
+                });
+            } else {
+                document.getElementById('chatBox').innerHTML = `<div style="text-align:center; margin-top:30px; color:#666; font-weight:600;">Abhi yahan koi chat nahi hai. Naya sawal poochhein!</div>`;
+            }
+        } catch(e) {
+            document.getElementById('chatBox').innerHTML = `<p style="text-align:center; color:red; font-weight:700;">Cloud sync error.</p>`;
         }
-        sendChat(true); 
     }
 
-    // 🔥 0-DELAY ENGINE WITH EDGE LIGHTING & LOGO LOADER
+    function startNewChat() {
+        currentChatId = null;     
+        currentChatTitle = null;
+        chatMemory = [];          
+        
+        document.getElementById('chatBox').innerHTML = "";
+        document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+        
+        let welcomeMsg = userEmail ? 
+            `हाँ जी **${userName ? userName : 'भाई जी'}**! मैंने एक नई शीट बना दी है। बोलिए क्या मदद करूँ? 🇮🇳` : 
+            `नमस्ते भाई जी! आपके पास **${MAX_GUEST_MESSAGES - guestMessageCount} free messages** हैं। बोलिए मैं आपकी क्या मदद करूँ? 🇮🇳`;
+            
+        renderMsg('ai', welcomeMsg, false);
+        
+        if(window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('mobile-overlay').classList.remove('active');
+        }
+    }
+
+    // -----------------------------------------
+    // 💬 AI CHAT ENGINE
+    // -----------------------------------------
     async function sendChat(isRetry = false) {
         const input = document.getElementById('chatInput');
+        let val = input.value.trim();
+        if(!val) return; 
+
+        if(!userEmail && guestMessageCount >= MAX_GUEST_MESSAGES) {
+            showLoginModal("Aapke 3 free messages poore ho gaye hain. Aage baat karne ke liye kripya Log in ya Sign up karein! ❤️", true);
+            return;
+        }
+
         const sendBtn = document.getElementById('sendBtn');
         const stopBtn = document.getElementById('stopGenBtn');
         const edgeLight = document.getElementById('edge-lighting');
-        
-        let val = input.value.trim();
-        let savedImg = currentBase64; 
-        
-        if(!val && !savedImg) return;
 
-        if(!isRetry) {
-            renderMsg('user', val || "📷 Image Attached", savedImg);
+        if(!currentChatId && userEmail) {
+            currentChatId = "Chat_" + Date.now();
+            currentChatTitle = val.substring(0, 30); 
+            
+            const container = document.getElementById('chat-list-container');
+            const div = document.createElement("div");
+            div.className = "chat-item active btn-liquid btn-light";
+            div.innerText = currentChatTitle;
+            div.onclick = () => loadPastChat(currentChatId, currentChatTitle, div);
+            div.addEventListener('mousedown', createRipple);
+            
+            if(container.querySelector('div[style]')) container.innerHTML = ""; 
+            container.prepend(div);
         }
+
+        if(!isRetry) renderMsg('user', val);
         
-        input.value = ""; input.disabled = true; sendBtn.disabled = true; clearImg();
+        input.value = ""; input.disabled = true; sendBtn.disabled = true;
+        edgeLight.classList.add('active'); 
 
-        // 🌟 ACTIVATE SAMSUNG EDGE LIGHTING
-        edgeLight.classList.add('active');
-
-        // 🌀 LOGO LOADER
         const loaderId = "L-" + Date.now();
-        const logoLoaderHtml = `
+        document.getElementById('chatBox').insertAdjacentHTML('beforeend', `
             <div id="${loaderId}" class="msg msg-ai glass-heavy logo-loader-container">
                 <img src="https://i.ibb.co/JW8pMsKT/PT-20260316-175000-0000.png" class="logo-loader-img">
                 <span class="logo-loader-text">Analyzing Request...</span>
-            </div>`;
-        document.getElementById('chatBox').insertAdjacentHTML('beforeend', logoLoaderHtml);
+            </div>`);
         document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
 
         let aiReply = "", aiDiv = null, hasStarted = false;
-        
         abortController = new AbortController();
         stopBtn.style.display = 'flex';
 
         try {
-            const payload = { modelIndex: selectedModelIndex, messages: [...chatMemory, {role:"user", content: val || "Scan this image"}], image: savedImg };
+            // 🚀 LANGUAGE FIX: Added hidden reinforcement in user prompt
+            let promptVal = val + "\n\n(Reply ONLY in pure Hindi using Devanagari script. No English or other languages.)";
+            
+            const payload = { 
+                modelIndex: selectedModelIndex, 
+                messages: [AI_SYSTEM_PROMPT, ...chatMemory, {role:"user", content: promptVal}] 
+            };
 
             const res = await fetch(WORKER_URL, {
                 method: "POST",
@@ -420,9 +645,7 @@
                                 const content = json.choices[0].delta.content;
                                 if(!hasStarted) {
                                     hasStarted = true;
-                                    // Turn off Edge Light as soon as AI starts typing
-                                    edgeLight.classList.remove('active');
-                                    
+                                    edgeLight.classList.remove('active'); 
                                     document.getElementById(loaderId).remove();
                                     aiDiv = document.createElement("div"); aiDiv.className = "msg msg-ai glass-heavy";
                                     document.getElementById('chatBox').appendChild(aiDiv);
@@ -436,100 +659,119 @@
                 }
             }
         } catch(e) {
-            if (e.name === 'AbortError') {
-                aiReply += "<br><br><i style='color:#d93025;'>[⏹ Generation Stopped by User]</i>";
-            } else {
-                const el = document.getElementById(loaderId);
-                if(el) { el.remove(); renderMsg('ai', "⚠️ Connection Error. Please try again."); }
-            }
+            if (e.name === 'AbortError') aiReply += "<br><br><i style='color:#d93025;'>[⏹ Stopped by User]</i>";
+            else { document.getElementById(loaderId)?.remove(); renderMsg('ai', "⚠️ Network Connection Error."); }
         } finally {
             input.disabled = false; sendBtn.disabled = false; input.focus();
-            stopBtn.style.display = 'none';
-            edgeLight.classList.remove('active'); // Ensure light is off
+            stopBtn.style.display = 'none'; edgeLight.classList.remove('active'); 
             abortController = null;
             
-            // Finalize
             if(aiDiv) {
                 document.getElementById(loaderId)?.remove();
                 aiDiv.innerHTML = marked.parse(aiReply);
-                addActions(aiDiv, aiReply, val, savedImg);
-                chatMemory.push({role:"user", content: val || "Image scanned"}, {role:"assistant", content: aiReply});
+                addActions(aiDiv, aiReply, val);
+                chatMemory.push({role:"user", content: val}, {role:"assistant", content: aiReply});
+                
+                if(!userEmail) {
+                    guestMessageCount++;
+                    localStorage.setItem("nextgen_guest_count", guestMessageCount);
+                    if(guestMessageCount >= MAX_GUEST_MESSAGES) {
+                        setTimeout(() => showLoginModal("Aapke 3 free messages poore ho gaye hain. Aage baat karne ke liye kripya Log in ya Sign up karein! ❤️", true), 1500);
+                    }
+                } else {
+                    gasFetch({ 
+                        action: "saveChat", 
+                        email: userEmail, 
+                        chatId: currentChatId, 
+                        chatTitle: currentChatTitle,
+                        userMessage: val, 
+                        aiReply: aiReply 
+                    }).catch(err => console.log("Silent cloud save ignored", err));
+                }
             }
         }
     }
 
-    function renderMsg(role, text, img) {
+    // -----------------------------------------
+    // 🎨 UI RENDERING & ACTIONS
+    // -----------------------------------------
+    function renderMsg(role, text, addActionBtns = true) {
         const div = document.createElement("div"); 
         div.className = `msg msg-${role} ${role === 'ai' ? 'glass-heavy' : 'glass'}`;
         
         let html = marked.parse(text || "");
-        if (img) html += `<br><img src="${img}" style="max-width:240px; border-radius:14px; margin-top:10px; display:block; border:1px solid rgba(255,255,255,0.6); box-shadow:0 6px 20px rgba(0,0,0,0.1);">`;
-        
-        // COPY PROMPT Logic completely restored
-        if (role === 'user') {
-            const prmptHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Prompt`;
-            html += `<div class="copy-prompt-container"><button class="action-btn" onclick="copyToClipboard(\`${(text||"").replace(/`/g, '\\`')}\`, this, \`${prmptHtml}\`)">${prmptHtml}</button></div>`;
+        if (role === 'user' && addActionBtns) {
+            const prmptHtml = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy`;
+            html += `<div style="display:flex; justify-content:flex-end; margin-top:12px;"><button class="action-btn btn-liquid btn-light" onclick="copyToClipboard(\`${(text||"").replace(/`/g, '\\`')}\`, this, \`${prmptHtml}\`)">${prmptHtml}</button></div>`;
         }
         
         div.innerHTML = html;
-        if(role==='ai') addActions(div, text, null, null);
+        if(role==='ai' && addActionBtns) addActions(div, text, null);
         document.getElementById('chatBox').appendChild(div);
         document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+        attachLiquidEffects(); 
     }
 
-    function addActions(div, aiText, userText, sentImgBase64) {
+    function addActions(div, aiText, userText) {
         const actions = document.createElement("div"); actions.className = "msg-actions";
         if(aiText) {
-            // Read Aloud
-            const speakBtn = document.createElement("button"); speakBtn.className = "action-btn";
-            speakBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`;
+            const speakBtn = document.createElement("button"); speakBtn.className = "action-btn btn-liquid btn-light";
+            speakBtn.innerHTML = `🔊 Read`;
             let isPlaying = false;
             speakBtn.onclick = () => {
-                if(isPlaying) { window.speechSynthesis.cancel(); isPlaying=false; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`; speakBtn.classList.remove('stop-active'); }
+                if(isPlaying) { window.speechSynthesis.cancel(); isPlaying=false; speakBtn.innerHTML=`🔊 Read`; speakBtn.classList.remove('stop-active'); }
                 else {
                     window.speechSynthesis.cancel();
-                    const cleanText = aiText.replace(/[*#_`~]/g, "").replace(/\[⏹ Generation Stopped by User\]/g, "");
+                    const cleanText = aiText.replace(/[*#_`~]/g, "").replace(/\[⏹ Stopped by User\]/g, "");
                     const utt = new SpeechSynthesisUtterance(cleanText);
                     utt.voice = /[\u0900-\u097F]/.test(cleanText) ? hinVoice : engVoice;
-                    utt.onend = () => { isPlaying=false; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Read Aloud`; speakBtn.classList.remove('stop-active'); };
+                    utt.onend = () => { isPlaying=false; speakBtn.innerHTML=`🔊 Read`; speakBtn.classList.remove('stop-active'); };
                     window.speechSynthesis.speak(utt);
-                    isPlaying=true; speakBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Stop Audio`; speakBtn.classList.add('stop-active');
+                    isPlaying=true; speakBtn.innerHTML=`⏸ Stop`; speakBtn.classList.add('stop-active');
                 }
             };
             actions.appendChild(speakBtn);
 
-            // Copy Answer
-            const cpBtn = document.createElement("button"); cpBtn.className = "action-btn";
-            const originalHtml = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Answer`;
-            cpBtn.innerHTML = originalHtml;
-            cpBtn.onclick = () => copyToClipboard(aiText.replace(/\[⏹ Generation Stopped by User\]/g, ""), cpBtn, originalHtml);
+            const cpBtn = document.createElement("button"); cpBtn.className = "action-btn btn-liquid btn-light";
+            cpBtn.innerHTML = `📋 Copy`;
+            cpBtn.onclick = () => copyToClipboard(aiText.replace(/\[⏹ Stopped by User\]/g, ""), cpBtn, `📋 Copy`);
             actions.appendChild(cpBtn);
-
-            // Retry Button
-            if(userText !== null) {
-                const retryBtn = document.createElement("button"); retryBtn.className = "action-btn";
-                retryBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path></svg> Retry`;
-                retryBtn.onclick = () => retryChat(userText, sentImgBase64, div);
-                actions.appendChild(retryBtn);
-            }
         }
         div.appendChild(actions);
         
-        // Highlight Code
-        div.querySelectorAll('pre code').forEach(b => { 
-            hljs.highlightElement(b); 
-            const cBtn = document.createElement('button'); cBtn.className='copy-code-btn'; cBtn.innerText='Copy Code';
-            cBtn.onclick = () => copyToClipboard(b.innerText, cBtn, 'Copy Code');
-            b.parentNode.appendChild(cBtn);
-        });
-        renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+        div.querySelectorAll('pre code').forEach(b => { hljs.highlightElement(b); });
+        renderMathInElement(div, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
     }
 
-    // Login logic
-    function showChatScreen() { document.getElementById('login-section').style.display='none'; document.getElementById('chat-section').style.display='flex'; }
-    function showLoginScreen() { document.getElementById('chat-section').style.display='none'; document.getElementById('login-section').style.display='flex'; }
-    function switchAuth(m) { isRegisterMode=(m==='register'); document.getElementById('nameInput').style.display=isRegisterMode?'block':'none'; }
-    function logout() { localStorage.clear(); location.reload(); }
+    function stopGeneration() {
+        if (abortController) { abortController.abort(); document.getElementById('stopGenBtn').style.display = 'none'; document.getElementById('edge-lighting').classList.remove('active'); }
+    }
+
+    function copyToClipboard(text, btn, originalHtml) {
+        const ta = document.createElement("textarea"); ta.value = text;
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); btn.innerHTML = `✅ Copied`; setTimeout(() => btn.innerHTML = originalHtml, 2000); } catch (e) {} document.body.removeChild(ta);
+    }
+
+    function toggleSidebar() { 
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.toggle('open'); 
+            document.getElementById('mobile-overlay').classList.toggle('active');
+        } else {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+    }
+    
+    function togglePopup() { const p = document.getElementById('papa-popup'); p.style.display = p.style.display==='block'?'none':'block'; }
+    function selectModel(idx, label) {
+        selectedModelIndex = idx; document.getElementById('current-model-label').innerText = label;
+        document.querySelectorAll('.model-option').forEach(el => el.classList.remove('selected'));
+        event.currentTarget.classList.add('selected'); togglePopup();
+    }
+    document.addEventListener('click', (e) => {
+        const popup = document.getElementById('papa-popup'); const btn = document.querySelector('.model-selector-btn');
+        if (popup && popup.style.display==='block' && !popup.contains(e.target) && !btn.contains(e.target)) popup.style.display='none';
+    });
 </script>
 </body>
 </html>
